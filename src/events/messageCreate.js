@@ -52,6 +52,8 @@ module.exports = {
             default:
                 // message.reply("Unknown command. Try `help`");
                 break;
+                // message.reply("Unknown command. Try `help`");
+                break;
         }
     },
 };

@@ -161,9 +161,11 @@ module.exports = {
                          if (!targetCode) {
                              db.markCodeUsed('codes', codeToRedeem);
                              db.markCodeUsed('nitro_codes', codeToRedeem);
+                             
+                             // Only record "claims" for monthly codes.
+                             // Manual codes are repeatable/one-time events that shouldn't trigger the monthly cooldown check.
+                             db.recordClaim(interaction.user.id, playerId, codeToRedeem);
                          }
-                         
-                         db.recordClaim(interaction.user.id, playerId, codeToRedeem);
                          
                          if (logChannel) {
                              logChannel.send(`[REDEEM] Discord: ${interaction.member} \`${interaction.user.username}\` PlayerID: \`${playerId}\` Code: \`${codeToRedeem}\` Locale: \`${interaction.locale}\``);

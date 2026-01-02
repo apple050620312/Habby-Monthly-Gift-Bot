@@ -6,7 +6,7 @@ database.sqlite
 codes.txt
 nitro.txt
 .env
-
+*.zip
 
 # Created by https://www.toptal.com/developers/gitignore/api/yarn,node,macos,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=yarn,node,macos,windows
