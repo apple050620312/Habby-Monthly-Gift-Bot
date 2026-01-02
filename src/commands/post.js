@@ -20,7 +20,7 @@ module.exports = {
         .setDMPermission(false),
     async execute(interaction) {
          if (!config.isDeveloper(interaction.user.id) && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-            return await interaction.reply({ content: `Sorry only admins :(`, ephemeral: true });
+            return await interaction.reply({ content: interaction.__('only_admins'), ephemeral: true });
         }
 
         const channel = interaction.options.getChannel('channel');
@@ -29,7 +29,7 @@ module.exports = {
 
         // Check permissions in target channel
         if (!interaction.guild.members.me.permissionsIn(channel).has([PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages], true)) {
-             return await interaction.reply({ content: `ERROR missing permissions to post in that channel.`, ephemeral: true });
+             return await interaction.reply({ content: interaction.__('permission_error'), ephemeral: true });
         }
 
         await channel.send({
@@ -44,6 +44,6 @@ module.exports = {
             ]
         });
 
-        return await interaction.reply({ content: `Posted!`, ephemeral: true });
+        return await interaction.reply({ content: interaction.__('posted_success'), ephemeral: true });
     },
 };

@@ -16,7 +16,7 @@ module.exports = {
         }
 
         const before = Date.now();
-        const message = await interaction.reply({ content: `Checking...`, fetchReply: true });
+        const message = await interaction.reply({ content: interaction.__('checking'), fetchReply: true });
         const after = Date.now();
         
         const row = db.getStats();

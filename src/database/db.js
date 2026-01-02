@@ -130,11 +130,78 @@ module.exports = {
     resetCodes,
     addCodes,
     addCodes,
+    addCodes,
     getDb: () => db,
     logStats: () => {
         const row = getStats();
         logger.info(`Normal codes remaining: ${Math.round(row.codes_left / row.codes_total * 100)}% (${row.codes_left} / ${row.codes_total})`);
         logger.info(`Nitro codes remaining: ${Math.round(row.nitro_left / row.nitro_total * 100)}% (${row.nitro_left} / ${row.nitro_total})`);
+    },
+    purgeOldData: async (targetSizeMib) => {
+        // targetSizeMib is in Megabytes
+        const targetSizeBytes = targetSizeMib * 1024 * 1024;
+        let stats = fs.statSync('database.sqlite');
+        
+        let result = {
+            initialSize: (stats.size / 1024 / 1024).toFixed(2),
+            finalSize: 0,
+            deletedMonths: []
+        };
+
+        if (stats.size <= targetSizeBytes) {
+            result.finalSize = result.initialSize;
+            return result;
+        }
+
+        // Loop to delete oldest month
+        while (stats.size > targetSizeBytes) {
+            // Find oldest date
+            const oldest = db.prepare('SELECT date FROM players ORDER BY date ASC LIMIT 1').get();
+            if (!oldest) break; // No more data
+
+            const date = new Date(oldest.date); // or if it's stored as timestamp vs buffer? 
+            // In init we said: date DATETIME DEFAULT CURRENT_TIMESTAMP. 
+            // SQLite stores this as string "YYYY-MM-DD HH:MM:SS" usually.
+            // But verify: getPlayerHistory logic uses "moment(new Date(row.date))".
+            // So new Date() should work.
+            
+            // Delete everything for that month
+            // Example: DELETE FROM players WHERE strftime('%Y-%m', date) = '2023-01'
+            // We need to construct the query carefully to match SQLite generic date format or timestamp.
+            // Let's assume standard ISO string from CURRENT_TIMESTAMP.
+            
+            // To be safe and efficient:
+            // "DELETE FROM players WHERE date < [First of Next Month]"
+            
+            const currentMonthStart = new Date(date.getFullYear(), date.getMonth(), 1);
+            const nextMonthStart = new Date(date.getFullYear(), date.getMonth() + 1, 1);
+            
+            // SQLite date comparison works with strings if ISO8601.
+            // If stored as INTEGER (unix millis), we need numbers.
+            // The original code used "moment().unix() * 1000" in INSERT:
+            // db.run(`INSERT INTO players... VALUES(?, ?, ?, ?)`, [..., moment().unix() * 1000], ...);
+            // So it IS stored as INTEGER (milliseconds).
+            
+            const nextMonthTs = nextMonthStart.getTime();
+
+            const info = db.prepare('DELETE FROM players WHERE date < ?').run(nextMonthTs);
+            
+            if (info.changes === 0) {
+                 // Should not happen if we found 'oldest', but safety break
+                 break;
+            }
+
+            // VACUUM to reclaim space and update file size
+            db.exec('VACUUM');
+            
+            stats = fs.statSync('database.sqlite');
+            result.deletedMonths.push(`${date.getFullYear()}-${date.getMonth()+1} (${info.changes} rows)`);
+            
+            logger.info(`Purged data before ${nextMonthStart.toISOString()}. New size: ${stats.size}`);
+        }
+        
+        result.finalSize = (stats.size / 1024 / 1024).toFixed(2);
+        return result;
     },
     close: () => {
         if (db) {

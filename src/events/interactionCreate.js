@@ -1,76 +1,11 @@
-const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ButtonBuilder, ButtonStyle, AttachmentBuilder, PermissionsBitField } = require('discord.js');
+const { PermissionsBitField } = require('discord.js');
 const config = require('../config');
 const db = require('../database/db');
 const habbyService = require('../services/habbyService');
-const { checkCanClaim } = require('../utils/claimHelpers');
+const { checkCanClaim, startClaimFlow, presentIdModal, presentCaptcha, presentCaptchaModal } = require('../utils/claimHelpers');
 const logger = require('../utils/logger');
 const moment = require('moment');
-
 const { applyLang } = require('../utils/i18n');
-
-async function presentCaptcha(interaction, playerId) {
-    const captchaId = await habbyService.generateCaptcha();
-    if (!captchaId) {
-        return await interaction.editReply({ content: interaction.__('get_captcha_fail') });
-    }
-
-    const imageBuffer = await habbyService.getCaptchaImage(captchaId);
-    if (!imageBuffer) {
-        return await interaction.editReply({ content: interaction.__('get_captcha_fail') });
-    }
-
-    const captcha = new AttachmentBuilder(imageBuffer, { name: 'captcha.png' });
-    const enterButton = new ActionRowBuilder().addComponents(
-        new ButtonBuilder()
-            .setCustomId(`captcha-${playerId}-${captchaId}`)
-            .setLabel(interaction.__('answer_captcha'))
-            .setStyle(ButtonStyle.Primary)
-    );
-
-    await interaction.editReply({ content: interaction.__('answer_captcha_below'), files: [captcha], components: [enterButton] });
-}
-
-async function presentIdModal(interaction) {
-    const modal = new ModalBuilder()
-        .setCustomId('idModal')
-        .setTitle(interaction.__('enter_id'));
-    const playerIdInput = new TextInputBuilder()
-        .setCustomId('playerId')
-        .setLabel(interaction.__('enter_id'))
-        .setMinLength(4)
-        .setMaxLength(10)
-        .setStyle(TextInputStyle.Short);
-
-    const row = db.getLastPlayerId(interaction.user.id);
-    if (row && row.playerid) {
-        playerIdInput.setValue(row.playerid);
-    }
-    
-    modal.addComponents(new ActionRowBuilder().addComponents(playerIdInput));
-    try {
-        await interaction.showModal(modal);
-    } catch (error) {
-        logger.error("Error showing ID modal: " + error.message);
-    }
-}
-
-async function presentCaptchaModal(interaction) {
-    const modal = new ModalBuilder()
-        .setCustomId(interaction.customId)
-        .setTitle(interaction.__('answer_captcha'));
-    const captchaInput = new TextInputBuilder()
-        .setCustomId('captcha')
-        .setLabel(interaction.__('whats_captcha_answer'))
-        .setMinLength(4)
-        .setMaxLength(4)
-        .setStyle(TextInputStyle.Short);
-    modal.addComponents(new ActionRowBuilder().addComponents(captchaInput));
-    try {
-        await interaction.showModal(modal);
-    } catch (error) {
-        logger.error("Error showing Captcha modal: " + error.message);
-    }
-}
 
 module.exports = {
     name: 'interactionCreate',
@@ -81,12 +16,16 @@ module.exports = {
              // interaction.member.premiumSinceTimestamp = 1; // Dev hack
         }
 
+        // --- COMMANDS ---
         if (interaction.isChatInputCommand()) {
             if (interaction.channel.isDMBased() && !config.isDeveloper(interaction.user.id)) {
-                return await interaction.reply("NO DM!");
+                return await interaction.reply(interaction.__('no_dm'));
             }
             if (!config.isDeveloper(interaction.user.id) && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-                 return await interaction.reply({ content: `Sorry only admins :(`, ephemeral: true });
+                 
+                 if (interaction.commandName !== 'redeem') {
+                     return await interaction.reply({ content: interaction.__('only_admins'), ephemeral: true });
+                 }
             }
 
             const command = client.commands.get(interaction.commandName);
@@ -96,22 +35,44 @@ module.exports = {
                 await command.execute(interaction, client);
             } catch (error) {
                 logger.error(error);
-                await interaction.reply({ content: 'There was an error executing this command!', ephemeral: true }).catch(() => {});
+                await interaction.reply({ content: interaction.__('command_error'), ephemeral: true }).catch(() => {});
             }
 
+        // --- BUTTONS ---
         } else if (interaction.isButton()) {
+            
+            // Random Code Flow
             if (interaction.customId === 'getCode') {
                 return await presentIdModal(interaction);
             }
-            if (interaction.customId.startsWith('captcha-')) {
-                return await presentCaptchaModal(interaction);
+            
+            // Manual/Specific Code Flow
+            if (interaction.customId.startsWith('manualRedeem-')) {
+                const code = interaction.customId.replace('manualRedeem-', '');
+                return await startClaimFlow(interaction, code);
             }
 
+            // Captcha Entry Button
+            if (interaction.customId.startsWith('captcha-')) {
+                return await presentCaptchaModal(interaction, interaction.customId);
+            }
+
+        // --- MODALS ---
         } else if (interaction.isModalSubmit()) {
-            if (interaction.customId === 'idModal') {
+            
+            // ID Input Submission
+            if (interaction.customId.startsWith('idModal')) {
                 await interaction.reply({ content: interaction.__('checking'), ephemeral: true });
                 const playerId = interaction.fields.getTextInputValue('playerId');
                 
+                // Parse targetCode from customId if present
+                // idModal or idModal-CODE
+                let targetCode = null;
+                const parts = interaction.customId.split('-');
+                if (parts.length > 1) {
+                    targetCode = parts.slice(1).join('-'); // Join back in case code has dashes?
+                }
+
                 if (!/^\d+$/.test(playerId)) {
                     return await interaction.editReply({ content: interaction.__('Invalid PlayerID \`%s\`. Please check again.', playerId), ephemeral: true });
                 }
@@ -119,32 +80,57 @@ module.exports = {
                 if (!await checkCanClaim(interaction, playerId)) return;
 
                 await interaction.editReply({ content: interaction.__('fetching_captcha'), ephemeral: true });
-                return await presentCaptcha(interaction, playerId);
+                return await presentCaptcha(interaction, playerId, targetCode);
             }
 
+            // Captcha Submission
             if (interaction.customId.startsWith('captcha-')) {
                 const parts = interaction.customId.split('-');
+                // captcha-playerId-captchaId-targetCode
                 const playerId = parts[1];
                 const captchaId = parts[2];
+                let targetCode = parts[3];
+                
+                if (targetCode === 'RANDOM') {
+                    targetCode = null;
+                }
 
                 await interaction.update({ content: interaction.__('checking_captcha'), components: [], files: [] });
                 const captchaAnswer = interaction.fields.getTextInputValue('captcha');
 
                 if (!/^\d+$/.test(captchaAnswer) || captchaAnswer.length !== 4) {
                     await interaction.editReply({ content: interaction.__('invalid_captcha') });
-                    return await presentCaptcha(interaction, playerId);
+                    return await presentCaptcha(interaction, playerId, targetCode);
                 }
 
                 if (!await checkCanClaim(interaction, playerId)) return;
 
+                let codeToRedeem = targetCode;
+                let row = null;
                 const table = (interaction.member.premiumSinceTimestamp && moment.utc().date() >= 16) ? "nitro_codes" : "codes";
-                const row = db.getUnusedCode(table);
 
-                if (!row || !row.code) {
-                    return await interaction.editReply({ content: interaction.__('no_more_gifts') });
+                if (!codeToRedeem) {
+                    // Fetch code from DB
+                    row = db.getUnusedCode(table);
+                    if (!row || !row.code) {
+                        return await interaction.editReply({ content: interaction.__('no_more_gifts') });
+                    }
+                    codeToRedeem = row.code;
+                } else {
+                    // Using specific code
+                    row = { code: codeToRedeem };
+                    // Should we check if this specific code is valid/unused in our DB? 
+                    // The request implies public input codes ("reedem codes they've input").
+                    // Usually these are public codes not in our DB.
+                    // But if it IS in our DB, we should mark it? 
+                    // The prompt says "reedem codes they've input". Assuming these are EXTERNAL codes not necessarily managed by us.
+                    // BUT /custom command says "claim buttons replace to codes that admins could input".
+                    // If it's a "custom" code, it's likely a generic public code.
+                    // We probably shouldn't check against OUR `codes` table for existence, but maybe used status?
+                    // For now, assume we just try to claim it.
                 }
 
-                const result = await habbyService.claimGiftCodes(playerId, row.code, captchaId, captchaAnswer);
+                const result = await habbyService.claimGiftCodes(playerId, codeToRedeem, captchaId, captchaAnswer);
 
                 if (!result) {
                     return await interaction.editReply({ content: interaction.__('a_problem_occured') });
@@ -154,28 +140,46 @@ module.exports = {
 
                 switch (result.code) {
                     case 0: // Success
-                         db.markCodeUsed(table, row.code);
-                         db.recordClaim(interaction.user.id, playerId, row.code);
+                         // User Request: "if success need to log in to database as monthly codes does"
+                         // This implies:
+                         // 1. Mark as used (if it exists in our pool)
+                         // 2. Record the claim (already done by recordClaim)
+                         
+                         // We attempt to mark it used in both potential tables. 
+                         // If it's not there, no harm done (changes = 0).
+                         
+                         // User Request Update: "no need to mark reedem and custom code as used because those codes will be repeatable"
+                         // So only mark used if it was a RANDOM code fetch (targetCode was null).
+                         
+                         if (!targetCode) {
+                             db.markCodeUsed('codes', codeToRedeem);
+                             db.markCodeUsed('nitro_codes', codeToRedeem);
+                         }
+                         
+                         db.recordClaim(interaction.user.id, playerId, codeToRedeem);
                          
                          if (logChannel) {
-                             logChannel.send(`[REDEEM] Discord: ${interaction.member} \`${interaction.user.username}\` PlayerID: \`${playerId}\` Code: \`${row.code}\` Locale: \`${interaction.locale}\``);
+                             logChannel.send(`[REDEEM] Discord: ${interaction.member} \`${interaction.user.username}\` PlayerID: \`${playerId}\` Code: \`${codeToRedeem}\` Locale: \`${interaction.locale}\``);
                          }
+                         logger.info(`Redeem success Discord: ${interaction.user.username} PlayerID: ${playerId} Code: ${codeToRedeem} Locale: ${interaction.locale}`);
                          return await interaction.editReply({ content: interaction.__('congratulations'), ephemeral: true });
                     
                     case 20402: // Already claimed
-                         logger.warn(`User claimed bad code ${row.code}`);
+                         logger.warn(`User claimed bad code ${codeToRedeem}`);
                          if (logChannel) logChannel.send(`[FAIL] Discord: ${interaction.member} - already claimed?`);
                          return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
 
                     case 20401: case 20403: case 20404: case 20409: // Bad/Expired code
-                         logger.warn(`Invalid code in DB: ${row.code}`);
-                         if (logChannel) logChannel.send(`[FAIL] Invalid/Expire code \`${row.code}\` ${result.code}`);
-                         db.markCodeUsed(table, row.code); // Mark as used so we don't dispense again
-                         // Logic suggests we retry? Original didn't really retry automatically, just stopped.
+                         logger.warn(`Invalid code: ${codeToRedeem}`);
+                         if (logChannel) logChannel.send(`[FAIL] Invalid/Expire code \`${codeToRedeem}\` ${result.code}`);
+                         
+                         if (!targetCode) {
+                            db.markCodeUsed(table, codeToRedeem);
+                         }
                          return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
                     
                     case 30001: case 20002: // Busy or Bad Captcha
-                         return await presentCaptcha(interaction, playerId);
+                         return await presentCaptcha(interaction, playerId, targetCode);
 
                     case 20003: // Bad Player ID
                          if (logChannel) logChannel.send(`[FAIL] Bad Player ID: ${playerId}`);

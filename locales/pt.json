@@ -14,5 +14,20 @@
 	"no_more_gifts": "Desculpe, não há mais presentes disponíveis! (Entre em contato com o admin)",
 	"something_went_wrong": "Algo deu errado... Você já recebeu um presente este mês?",
 	"a_problem_occured": "Um problema ocorreu ao tentar resgatar seu presente. Por favor, tente novamente mais tarde.",
-	"congratulations": "Parabéns! Seu presente foi enviado para sua caixa de correio no jogo. Vá conferir!"
+	"congratulations": "Parabéns! Seu presente foi enviado para sua caixa de correio no jogo. Vá conferir!",
+	"no_dm": "SEM DM!",
+	"only_admins": "Desculpe, apenas admins :(",
+	"command_error": "Houve um erro ao executar este comando!",
+	"posted_success": "Postado!",
+	"permission_error": "ERRO: permissões ausentes para postar nesse canal.",
+	"fetching_code": "Buscando um código. Aguarde um momento.",
+	"your_code_is": "Seu código é `%s`!",
+	"no_valid_codes": "Nenhum código válido fornecido.",
+	"max_codes_limit": "Máximo de 5 códigos por linha/mensagem permitidos por enquanto.",
+	"posted_buttons": "%s botões postados!",
+    "purge_start": "Iniciando limpeza para atingir o tamanho alvo: %s MiB. Atual: %s MiB",
+    "purge_progress": "%s registros limpos de %s... Novo tamanho: %s MiB",
+    "purge_complete": "Limpeza completa! Tamanho final: %s MiB",
+    "purge_error": "Erro durante a limpeza: %s",
+    "purge_no_action": "O banco de dados já é menor que o tamanho alvo."
 }

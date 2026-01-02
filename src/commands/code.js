@@ -9,10 +9,10 @@ module.exports = {
         .setDMPermission(false),
     async execute(interaction) {
         if (!config.isDeveloper(interaction.user.id) && !interaction.member.permissions.has('Administrator')) {
-             return await interaction.reply({ content: `Sorry only admins :(`, ephemeral: true });
+             return await interaction.reply({ content: interaction.__('only_admins'), ephemeral: true });
         }
 
-        await interaction.reply({ content: `Fetching a code. Hold on one moment.`, ephemeral: false });
+        await interaction.reply({ content: interaction.__('fetching_code'), ephemeral: false });
         
         const row = db.getUnusedCode('codes');
         if (!row || !row.code) {
@@ -20,6 +20,6 @@ module.exports = {
         }
 
         db.markCodeUsed('codes', row.code);
-        return await interaction.editReply({ content: `Your code is \`${row.code}\`!`, components: [], files: [] });
+        return await interaction.editReply({ content: interaction.__('your_code_is', row.code), components: [], files: [] });
     },
 };

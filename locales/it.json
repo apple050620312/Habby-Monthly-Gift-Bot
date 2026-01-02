@@ -14,5 +14,20 @@
 	"no_more_gifts": "Spiacenti, non ci sono più regali disponibili! (Contattare l'admin)",
 	"something_went_wrong": "Qualcosa è andato storto... Hai già ricevuto un regalo questo mese?",
 	"a_problem_occured": "Si è verificato un problema durante il riscatto del regalo. Riprova più tardi.",
-	"congratulations": "Congratulazioni! Il tuo regalo è stato inviato alla tua casella di posta nel gioco. Vai a controllare!"
+	"congratulations": "Congratulazioni! Il tuo regalo è stato inviato alla tua casella di posta nel gioco. Vai a controllare!",
+	"no_dm": "NO DM!",
+	"only_admins": "Spiacente, solo admin :(",
+	"command_error": "C'è stato un errore nell'esecuzione di questo comando!",
+	"posted_success": "Pubblicato!",
+	"permission_error": "ERRORE permessi mancanti per pubblicare in quel canale.",
+	"fetching_code": "Recupero codice. Un attimo perfavore.",
+	"your_code_is": "Il tuo codice è `%s`!",
+	"no_valid_codes": "Nessun codice valido fornito.",
+	"max_codes_limit": "Max 5 codici per riga/messaggio consentiti per ora.",
+	"posted_buttons": "Pubblicati %s pulsanti!",
+    "purge_start": "Avvio pulizia per raggiungere la dimensione target: %s MiB. Attuale: %s MiB",
+    "purge_progress": "Eliminati %s record da %s... Nuova dimensione: %s MiB",
+    "purge_complete": "Pulizia completata! Dimensione finale: %s MiB",
+    "purge_error": "Errore durante la pulizia: %s",
+    "purge_no_action": "Il database è già più piccolo della dimensione target."
 }

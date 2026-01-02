@@ -14,5 +14,20 @@
 	"no_more_gifts": "죄송합니다. 더 이상 사용 가능한 선물이 없습니다! (관리자에게 문의하세요)",
 	"something_went_wrong": "문제가 발생했습니다... 이번 달에 이미 선물을 받으셨나요?",
 	"a_problem_occured": "선물을 교환하는 동안 문제가 발생했습니다. 나중에 다시 시도해 주세요.",
-	"congratulations": "축하합니다! 선물이 게임 내 우편함으로 발송되었습니다. 확인해 보세요!"
+	"congratulations": "축하합니다! 선물이 게임 내 우편함으로 발송되었습니다. 확인해 보세요!",
+	"no_dm": "비공개 메시지(DM) 금지!",
+	"only_admins": "죄송합니다, 관리자만 가능합니다 :(",
+	"command_error": "이 명령을 실행하는 중 오류가 발생했습니다!",
+	"posted_success": "게시되었습니다!",
+	"permission_error": "오류: 해당 채널에 게시할 권한이 없습니다.",
+	"fetching_code": "코드를 가져오고 있습니다. 잠시만 기다려주세요.",
+	"your_code_is": "당신의 코드는 `%s`입니다!",
+	"no_valid_codes": "유효한 코드가 제공되지 않았습니다.",
+	"max_codes_limit": "현재 줄/메시지당 최대 5개의 코드만 허용됩니다.",
+	"posted_buttons": "%s개의 버튼을 게시했습니다!",
+    "purge_start": "목표 크기 %s MiB에 도달하기 위해 정리를 시작합니다. 현재: %s MiB",
+    "purge_progress": "%s에서 %s개의 레코드를 정리했습니다... 새로운 크기: %s MiB",
+    "purge_complete": "정리 완료! 최종 크기: %s MiB",
+    "purge_error": "정리 중 오류 발생: %s",
+    "purge_no_action": "데이터베이스가 이미 목표 크기보다 작습니다."
 }

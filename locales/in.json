@@ -14,5 +14,20 @@
 	"no_more_gifts": "Maaf, tidak ada hadiah lagi yang tersedia! (Silakan hubungi admin)",
 	"something_went_wrong": "Ada yang salah... Apakah kamu sudah menerima hadiah bulan ini?",
 	"a_problem_occured": "Terjadi masalah saat mencoba menukarkan hadiahmu. Silakan coba lagi nanti.",
-	"congratulations": "Selamat! Hadiahmu telah dikirim ke kotak surat di dalam game. Segera periksa!"
+	"congratulations": "Selamat! Hadiahmu telah dikirim ke kotak surat di dalam game. Segera periksa!",
+	"no_dm": "JANGAN DM!",
+	"only_admins": "Maaf hanya admin :(",
+	"command_error": "Terjadi kesalahan saat menjalankan perintah ini!",
+	"posted_success": "Terposting!",
+	"permission_error": "ERROR izin tidak cukup untuk memposting di saluran itu.",
+	"fetching_code": "Mengambil kode. Tunggu sebentar.",
+	"your_code_is": "Kode Anda adalah `%s`!",
+	"no_valid_codes": "Tidak ada kode valid yang diberikan.",
+	"max_codes_limit": "Maksimal 5 kode per baris/pesan diizinkan saat ini.",
+	"posted_buttons": "Memposting %s tombol!",
+    "purge_start": "Memulai pembersihan untuk mencapai ukuran target: %s MiB. Saat ini: %s MiB",
+    "purge_progress": "Membersihkan %s data dari %s... Ukuran baru: %s MiB",
+    "purge_complete": "Pembersihan selesai! Ukuran akhir: %s MiB",
+    "purge_error": "Kesalahan selama pembersihan: %s",
+    "purge_no_action": "Database sudah lebih kecil dari ukuran target."
 }

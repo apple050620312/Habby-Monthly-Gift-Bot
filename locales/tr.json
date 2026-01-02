@@ -14,5 +14,20 @@
 	"no_more_gifts": "Üzgünüz, mevcut hediye kalmadı! (Lütfen yöneticiyle iletişime geçin)",
 	"something_went_wrong": "Bir şeyler ters gitti... Bu ay zaten bir hediye aldınız mı?",
 	"a_problem_occured": "Hediyenizi almaya çalışırken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.",
-	"congratulations": "Tebrikler! Hediyeniz oyun içi posta kutunuza gönderildi. Gidip kontrol edin!"
+	"congratulations": "Tebrikler! Hediyeniz oyun içi posta kutunuza gönderildi. Gidip kontrol edin!",
+	"no_dm": "DM YOK!",
+	"only_admins": "Üzgünüm sadece yöneticiler :(",
+	"command_error": "Bu komutu yürütürken bir hata oluştu!",
+	"posted_success": "Gönderildi!",
+	"permission_error": "HATA, o kanalda paylaşım yapma izni eksik.",
+	"fetching_code": "Kod alınıyor. Bir saniye bekleyin.",
+	"your_code_is": "Kodunuz `%s`!",
+	"no_valid_codes": "Geçerli kod sağlanmadı.",
+	"max_codes_limit": "Şimdilik satır/mesaj başına en fazla 5 kod izin veriliyor.",
+	"posted_buttons": "%s buton gönderildi!",
+    "purge_start": "Hedef boyuta ulaşmak için temizlik başlatılıyor: %s MiB. Mevcut: %s MiB",
+    "purge_progress": "%s kayıt %s tarihinden silindi... Yeni boyut: %s MiB",
+    "purge_complete": "Temizlik tamamlandı! Son boyut: %s MiB",
+    "purge_error": "Temizlik sırasında hata: %s",
+    "purge_no_action": "Veritabanı zaten hedef boyuttan daha küçük."
 }

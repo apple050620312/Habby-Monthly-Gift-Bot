@@ -3,7 +3,6 @@
 	"whats_your_id": "What's your in-game player ID?",
 	"invalid_id": "Invalid Player ID `%s`. Please check again.",
 	"checking": "Checking...",
-	
 	"fetching_captcha": "Fetching captcha...",
 	"get_captcha_fail": "Failed getting captcha. Try again later.",
 	"answer_captcha_below": "Please answer the captcha below",
@@ -11,10 +10,24 @@
 	"whats_captcha_answer": "What is the captcha's answer",
 	"checking_captcha": "Checking captcha...",
 	"invalid_captcha": "Invalid captcha, please try again.",
-
 	"cant_claim_until": "You can't claim the gift again until %s",
 	"no_more_gifts": "Sorry there are no more gifts available! (Please contact admin)",
 	"something_went_wrong": "Something went wrong... Did you already received a gift this month?",
 	"a_problem_occured": "A problem occured when trying to redeem your gift. Please try again later.",
-	"congratulations": "Congratulations! Your gift has been sent to your in-game mailbox. Go and check it out!"
+	"congratulations": "Congratulations! Your gift has been sent to your in-game mailbox. Go and check it out!",
+    "no_dm": "NO DM!",
+    "only_admins": "Sorry only admins :(",
+    "command_error": "There was an error executing this command!",
+    "posted_success": "Posted!",
+    "permission_error": "ERROR missing permissions to post in that channel.",
+    "fetching_code": "Fetching a code. Hold on one moment.",
+    "your_code_is": "Your code is `%s`!",
+    "no_valid_codes": "No valid codes provided.",
+    "max_codes_limit": "Max 5 codes per row/message allowed for now.",
+    "posted_buttons": "Posted %s buttons!",
+    "purge_start": "Starting purge to hit target size: %s MiB. Current: %s MiB",
+    "purge_progress": "Purged %s records from %s... New size: %s MiB",
+    "purge_complete": "Purge complete! Final size: %s MiB",
+    "purge_error": "Error during purge: %s",
+    "purge_no_action": "Database is already smaller than target size."
 }

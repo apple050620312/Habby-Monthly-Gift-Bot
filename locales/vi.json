@@ -14,5 +14,20 @@
 	"no_more_gifts": "Xin lỗi, không còn quà nào! (Vui lòng liên hệ admin)",
 	"something_went_wrong": "Có gì đó không ổn... Bạn đã nhận quà trong tháng này chưa?",
 	"a_problem_occured": "Đã xảy ra sự cố khi cố gắng đổi quà. Vui lòng thử lại sau.",
-	"congratulations": "Chúc mừng! Quà của bạn đã được gửi đến hòm thư trong game. Hãy đi kiểm tra ngay!"
+	"congratulations": "Chúc mừng! Quà của bạn đã được gửi đến hòm thư trong game. Hãy đi kiểm tra ngay!",
+	"no_dm": "KHÔNG DM!",
+	"only_admins": "Xin lỗi, chỉ dành cho admin :(",
+	"command_error": "Đã xảy ra lỗi khi thực thi lệnh này!",
+	"posted_success": "Đã đăng!",
+	"permission_error": "LỖI thiếu quyền để đăng trong kênh đó.",
+	"fetching_code": "Đang lấy mã. Chờ một chút.",
+	"your_code_is": "Mã của bạn là `%s`!",
+	"no_valid_codes": "Không có mã hợp lệ nào được cung cấp.",
+	"max_codes_limit": "Hiện tại chỉ cho phép tối đa 5 mã mỗi hàng/tin nhắn.",
+	"posted_buttons": "Đã đăng %s nút!",
+    "purge_start": "Bắt đầu dọn dẹp để đạt kích thước mục tiêu: %s MiB. Hiện tại: %s MiB",
+    "purge_progress": "Đã dọn %s bản ghi từ %s... Kích thước mới: %s MiB",
+    "purge_complete": "Dọn dẹp hoàn tất! Kích thước cuối cùng: %s MiB",
+    "purge_error": "Lỗi trong quá trình dọn dẹp: %s",
+    "purge_no_action": "Cơ sở dữ liệu đã nhỏ hơn kích thước mục tiêu."
 }
