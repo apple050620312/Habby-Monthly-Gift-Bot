@@ -29,5 +29,6 @@
     "purge_progress": "已從 %s 清理 %s 條記錄... 新大小：%s MiB",
     "purge_complete": "清理完成！最終大小：%s MiB",
     "purge_error": "清理過程中發生錯誤：%s",
-    "purge_no_action": "資料庫已小於目標大小。"
+    "purge_no_action": "資料庫已小於目標大小。",
+    "already_redeemed": "您可能已經兌換過此代碼或代碼已過期。"
 }

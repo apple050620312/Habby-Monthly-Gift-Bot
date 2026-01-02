@@ -13,6 +13,6 @@ module.exports = {
     adminChannel: process.env.ADMIN_CHANNEL_ID,
     clientId: process.env.CLIENT_ID,
     token: process.env.TOKEN,
-    host: process.env.HOSTNAME,
+    host: process.env.API_HOST,
     game: process.env.GAME_STATUS,
 };

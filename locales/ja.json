@@ -29,5 +29,6 @@
     "purge_progress": "%s から %s 件のレコードを削除しました... 新しいサイズ: %s MiB",
     "purge_complete": "パージ完了！ 最終サイズ: %s MiB",
     "purge_error": "パージ中にエラーが発生しました: %s",
-    "purge_no_action": "データベースはすでに目標サイズより小さいです。"
+    "purge_no_action": "データベースはすでに目標サイズより小さいです。",
+    "already_redeemed": "このコードは既に使用されているか、期限切れの可能性があります。"
 }

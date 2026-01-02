@@ -29,5 +29,6 @@
     "purge_progress": "Eliminati %s record da %s... Nuova dimensione: %s MiB",
     "purge_complete": "Pulizia completata! Dimensione finale: %s MiB",
     "purge_error": "Errore durante la pulizia: %s",
-    "purge_no_action": "Il database è già più piccolo della dimensione target."
+    "purge_no_action": "Il database è già più piccolo della dimensione target.",
+    "already_redeemed": "Potresti aver già riscattato questo codice o è scaduto."
 }

@@ -29,5 +29,6 @@
     "purge_progress": "%s kayıt %s tarihinden silindi... Yeni boyut: %s MiB",
     "purge_complete": "Temizlik tamamlandı! Son boyut: %s MiB",
     "purge_error": "Temizlik sırasında hata: %s",
-    "purge_no_action": "Veritabanı zaten hedef boyuttan daha küçük."
+    "purge_no_action": "Veritabanı zaten hedef boyuttan daha küçük.",
+    "already_redeemed": "Bu kodu zaten kullanmış olabilirsiniz veya süresi dolmuş olabilir."
 }

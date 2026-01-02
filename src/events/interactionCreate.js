@@ -164,19 +164,41 @@ module.exports = {
                          logger.info(`Redeem success Discord: ${interaction.user.username} PlayerID: ${playerId} Code: ${codeToRedeem} Locale: ${interaction.locale}`);
                          return await interaction.editReply({ content: interaction.__('congratulations'), ephemeral: true });
                     
-                    case 20402: // Already claimed
-                         logger.warn(`User claimed bad code ${codeToRedeem}`);
-                         if (logChannel) logChannel.send(`[FAIL] Discord: ${interaction.member} - already claimed?`);
-                         return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
+                    case 20402: // Already claimed, or repeatable code limit reached
+                         if (targetCode) {
+                             // [Manual/Custom Code]
+                             // Quiet failure for user input codes (likely already redeemed by them)
+                             if (logChannel) logChannel.send(`[INFO] Discord: ${interaction.member} - Custom Code ${codeToRedeem} already redeemed/limit.`);
+                             return await interaction.editReply({ content: interaction.__('already_redeemed'), ephemeral: true });
+                         } else {
+                             // [Monthly Code from DB]
+                             // This is a SYSTEM ERROR. We gave them a code that was already used.
+                             logger.warn(`User assigned ALREADY USED code from DB: ${codeToRedeem}`);
+                             if (logChannel) logChannel.send(`[WARN] Database gave used code ${codeToRedeem} to ${interaction.member} (${interaction.user.id})`);
+                             
+                             // Mark it used in DB so we don't give it out again
+                             db.markCodeUsed(table, codeToRedeem);
+                             
+                             // Generic error because this shouldn't happen to a fresh monthly code
+                             return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
+                         }
 
                     case 20401: case 20403: case 20404: case 20409: // Bad/Expired code
-                         logger.warn(`Invalid code: ${codeToRedeem}`);
-                         if (logChannel) logChannel.send(`[FAIL] Invalid/Expire code \`${codeToRedeem}\` ${result.code}`);
-                         
-                         if (!targetCode) {
-                            db.markCodeUsed(table, codeToRedeem);
+                         if (targetCode) {
+                             // [Manual/Custom Code]
+                             // User typed something wrong or old code
+                             if (logChannel) logChannel.send(`[FAIL] Manual Code Invalid/Expire \`${codeToRedeem}\` ${result.code}`);
+                             return await interaction.editReply({ content: interaction.__('already_redeemed'), ephemeral: true });
+                         } else {
+                             // [Monthly Code from DB]
+                             // Our DB contains garbage/expired codes
+                             logger.warn(`Invalid code in DB: ${codeToRedeem}`);
+                             if (logChannel) logChannel.send(`[WARN] Database contained Invalid/Expire code \`${codeToRedeem}\` ${result.code}`);
+                             
+                             db.markCodeUsed(table, codeToRedeem);
+                             
+                             return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
                          }
-                         return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
                     
                     case 30001: case 20002: // Busy or Bad Captcha
                          return await presentCaptcha(interaction, playerId, targetCode);

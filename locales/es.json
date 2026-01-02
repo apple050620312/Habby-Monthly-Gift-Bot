@@ -29,5 +29,6 @@
     "purge_progress": "Purgados %s registros de %s... Nuevo tamaño: %s MiB",
     "purge_complete": "¡Purga completada! Tamaño final: %s MiB",
     "purge_error": "Error durante la purga: %s",
-    "purge_no_action": "La base de datos ya es más pequeña que el tamaño objetivo."
+    "purge_no_action": "La base de datos ya es más pequeña que el tamaño objetivo.",
+    "already_redeemed": "Es posible que ya hayas canjeado este código o que haya caducado."
 }

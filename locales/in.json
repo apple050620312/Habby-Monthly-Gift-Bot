@@ -29,5 +29,6 @@
     "purge_progress": "Membersihkan %s data dari %s... Ukuran baru: %s MiB",
     "purge_complete": "Pembersihan selesai! Ukuran akhir: %s MiB",
     "purge_error": "Kesalahan selama pembersihan: %s",
-    "purge_no_action": "Database sudah lebih kecil dari ukuran target."
+    "purge_no_action": "Database sudah lebih kecil dari ukuran target.",
+    "already_redeemed": "Anda mungkin sudah menukarkan kode ini atau kodenya sudah kadaluwarsa."
 }

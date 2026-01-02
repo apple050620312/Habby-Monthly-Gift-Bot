@@ -29,5 +29,6 @@
     "purge_progress": "Purged %s records from %s... New size: %s MiB",
     "purge_complete": "Purge complete! Final size: %s MiB",
     "purge_error": "Error during purge: %s",
-    "purge_no_action": "Database is already smaller than target size."
+    "purge_no_action": "Database is already smaller than target size.",
+    "already_redeemed": "You might have already redeemed this code or it has expired."
 }

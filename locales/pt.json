@@ -29,5 +29,6 @@
     "purge_progress": "%s registros limpos de %s... Novo tamanho: %s MiB",
     "purge_complete": "Limpeza completa! Tamanho final: %s MiB",
     "purge_error": "Erro durante a limpeza: %s",
-    "purge_no_action": "O banco de dados já é menor que o tamanho alvo."
+    "purge_no_action": "O banco de dados já é menor que o tamanho alvo.",
+    "already_redeemed": "Você pode já ter resgatado este código ou ele expirou."
 }
