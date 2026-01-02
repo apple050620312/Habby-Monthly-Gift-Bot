@@ -1,69 +1,40 @@
-const { SlashCommandBuilder, Routes } = require('discord.js');
-const { REST } = require('@discordjs/rest');
-const config = require('./config.js')
+const { REST, Routes } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
+const config = require('./src/config');
+const logger = require('./src/utils/logger');
 
-let commands = [
-    new SlashCommandBuilder()
-        .setName('status')
-        .setDescription('Checks bot status'),
-    new SlashCommandBuilder()
-        .setName('lookup')
-        .setDescription('Looks up a playerid')
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('user')
-                .setDescription('Info about a discord user')
-                .addUserOption(option =>
-                    option.setName('target')
-                        .setDescription('user')
-                        .setRequired(true)))
-        .addSubcommand(subcommand =>
-            subcommand
-                .setName('id')
-                .setDescription('Info about a player id')
-                .addStringOption(option =>
-                    option.setName('target')
-                        .setDescription('id')
-                        .setRequired(true)))
-        .setDMPermission(false),
-    new SlashCommandBuilder()
-        .setName('post')
-        .setDescription('Post the gift button to a specific channel')
-        .addChannelOption(option =>
-            option.setName('channel')
-                .setDescription('Channel to post to')
-                .setRequired(true))
-        .addStringOption(option =>
-            option.setName('message')
-                .setDescription('The message to send')
-                .setRequired(true))
-        .addStringOption(option =>
-            option.setName('label')
-                .setDescription('The text of the button')
-                .setRequired(true))
-        .setDMPermission(false),
-    new SlashCommandBuilder()
-        .setName('code')
-        .setDescription('Get code')
-        .setDMPermission(false),
-]
-.map(command => command.toJSON());
+const commands = [];
+const commandsPath = path.join(__dirname, 'src/commands');
+const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+    const command = require(path.join(commandsPath, file));
+    if ('data' in command && 'execute' in command) {
+        commands.push(command.data.toJSON());
+    } else {
+        logger.warn(`The command at ${file} is missing a required "data" or "execute" property.`);
+    }
+}
 
 const rest = new REST({ version: '10' }).setToken(config.token);
-rest.put(Routes.applicationCommands(config.clientId), { body: commands })
-    .then((data) => console.log(`Successfully registered ${data.length} application commands.`))
-    .catch(console.error);
 
+(async () => {
+    try {
+        logger.info(`Started refreshing ${commands.length} application (/) commands.`);
 
+        // Determine if we are deploying globally or to a specific guild
+        // The original deploy.js had a section for Guild commands (captcha test?) and global commands.
+        // We will deploy all current commands as application commands (Global).
+        // If config.guildId is present, you might want to deploy there for faster updates during dev.
+        
+        const data = await rest.put(
+            Routes.applicationCommands(config.clientId),
+            { body: commands },
+        );
 
-    
-commands = [
-    // new SlashCommandBuilder()
-    //     .setName('captcha')
-    //     .setDescription('Test captcha flow')
-]
-.map(command => command.toJSON());
-
-rest.put(Routes.applicationGuildCommands(config.clientId, config.guildId), { body: commands })
-    .then((data) => console.log(`Successfully registered ${data.length} guild commands.`))
-    .catch(console.error);
+        logger.info(`Successfully reloaded ${data.length} application (/) commands.`);
+    } catch (error) {
+        logger.error(error);
+    }
+})();

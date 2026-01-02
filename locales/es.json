@@ -1,20 +1,18 @@
 {
-	"enter_id": "Ingrese la ID del jugador (dígitos)",
+	"enter_id": "Introduce ID de Jugador (Dígitos)",
 	"whats_your_id": "¿Cuál es tu ID de jugador en el juego?",
-	"invalid_id": "ID de jugador no válido `%s`. Por favor verifique nuevamente.",
-	"checking": "De cheques...",
-	
+	"invalid_id": "ID de Jugador inválido `%s`. Por favor verifica de nuevo.",
+	"checking": "Comprobando...",
 	"fetching_captcha": "Obteniendo captcha...",
-	"get_captcha_fail": "No se pudo obtener el captcha. Vuelve a intentarlo más tarde.",
-	"answer_captcha_below": "Por favor responda el captcha a continuación",
-	"answer_captcha": "Captcha de respuesta",
-	"whats_captcha_answer": "cual es la respuesta del captcha",
+	"get_captcha_fail": "Fallo al obtener captcha. Intenta más tarde.",
+	"answer_captcha_below": "Por favor responde el captcha abajo",
+	"answer_captcha": "Responder captcha",
+	"whats_captcha_answer": "¿Cuál es la respuesta del captcha?",
 	"checking_captcha": "Comprobando captcha...",
-	"invalid_captcha": "Captcha no válido, inténtalo de nuevo.",
-
-	"cant_claim_until": "No puedes reclamar el regalo nuevamente hasta %s",
-	"no_more_gifts": "¡Lo sentimos, no hay más regalos disponibles! (Por favor contacte al administrador)",
+	"invalid_captcha": "Captcha inválido, por favor intenta de nuevo.",
+	"cant_claim_until": "No puedes reclamar el regalo de nuevo hasta %s",
+	"no_more_gifts": "¡Lo siento, no hay más regalos disponibles! (Por favor contacta al admin)",
 	"something_went_wrong": "Algo salió mal... ¿Ya recibiste un regalo este mes?",
-	"a_problem_occured": "Ocurrió un problema al intentar canjear tu regalo. Inténtelo de nuevo más tarde.",
-	"congratulations": "¡Felicidades! Tu regalo ha sido enviado a tu buzón de correo del juego. ¡Ve y compruébalo!"
+	"a_problem_occured": "Ocurrió un problema al intentar canjear tu regalo. Por favor intenta más tarde.",
+	"congratulations": "¡Felicidades! Tu regalo ha sido enviado a tu buzón en el juego. ¡Ve a revisarlo!"
 }

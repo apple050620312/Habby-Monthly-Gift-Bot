@@ -1,20 +1,18 @@
 {
-	"enter_id": "Geben Sie die Spieler-ID (Ziffern) ein.",
-	"whats_your_id": "Wie lautet Ihre Spieler-ID im Spiel?",
-	"invalid_id": "Ungültige Spieler-ID „%s“. Bitte überprüfen Sie es noch einmal.",
-	"checking": "Überprüfung...",
-	
+	"enter_id": "Spieler-ID eingeben (Zahlen)",
+	"whats_your_id": "Wie lautet deine Spiel-ID?",
+	"invalid_id": "Ungültige Spieler-ID `%s`. Bitte überprüfe sie erneut.",
+	"checking": "Überprüfe...",
 	"fetching_captcha": "Captcha wird abgerufen...",
-	"get_captcha_fail": "Captcha konnte nicht abgerufen werden. Versuchen Sie es später noch einmal.",
-	"answer_captcha_below": "Bitte beantworten Sie das Captcha unten",
+	"get_captcha_fail": "Captcha konnte nicht abgerufen werden. Versuche es später erneut.",
+	"answer_captcha_below": "Bitte antworte auf das Captcha unten",
 	"answer_captcha": "Captcha beantworten",
-	"whats_captcha_answer": "Wie lautet die Antwort des Captchas?",
-	"checking_captcha": "Captcha wird überprüft...",
-	"invalid_captcha": "Ungültiges Captcha, bitte versuchen Sie es erneut.",
-
-	"cant_claim_until": "Du kannst das Geschenk erst ab %s erneut anfordern",
-	"no_more_gifts": "Leider sind keine Geschenke mehr verfügbar! (Bitte kontaktieren Sie den Administrator)",
+	"whats_captcha_answer": "Wie lautet die Captcha-Antwort?",
+	"checking_captcha": "Überprüfe Captcha...",
+	"invalid_captcha": "Ungültiges Captcha, bitte versuche es erneut.",
+	"cant_claim_until": "Du kannst das Geschenk erst wieder ab %s beanspruchen",
+	"no_more_gifts": "Leider sind keine Geschenke mehr verfügbar! (Bitte Admins kontaktieren)",
 	"something_went_wrong": "Etwas ist schiefgelaufen... Hast du diesen Monat bereits ein Geschenk erhalten?",
-	"a_problem_occured": "Beim Versuch, Ihr Geschenk einzulösen, ist ein Problem aufgetreten. Bitte versuchen Sie es später noch einmal.",
-	"congratulations": "Glückwunsch! Ihr Geschenk wurde an Ihr Postfach im Spiel gesendet. Schauen Sie doch mal vorbei!"
+	"a_problem_occured": "Ein Problem ist beim Einlösen des Geschenks aufgetreten. Bitte versuche es später erneut.",
+	"congratulations": "Glückwunsch! Dein Geschenk wurde an dein Postfach im Spiel gesendet. Schau gleich nach!"
 }

@@ -1,20 +1,18 @@
 {
-	"enter_id": "Entrez l'ID du joueur (chiffres)",
-	"whats_your_id": "Quel est votre identifiant de joueur dans le jeu ?",
-	"invalid_id": "ID de joueur `%s` invalide. Veuillez vérifier à nouveau.",
+	"enter_id": "Entrez l'ID Joueur (Chiffres)",
+	"whats_your_id": "Quel est votre ID de joueur dans le jeu ?",
+	"invalid_id": "ID Joueur invalide `%s`. Veuillez vérifier à nouveau.",
 	"checking": "Vérification...",
-	
 	"fetching_captcha": "Récupération du captcha...",
-	"get_captcha_fail": "Échec de l'obtention du captcha. Réessayez plus tard.",
+	"get_captcha_fail": "Échec de la récupération du captcha. Réessayez plus tard.",
 	"answer_captcha_below": "Veuillez répondre au captcha ci-dessous",
 	"answer_captcha": "Répondre au captcha",
-	"whats_captcha_answer": "Quelle est la réponse du captcha",
+	"whats_captcha_answer": "Quelle est la réponse du captcha ?",
 	"checking_captcha": "Vérification du captcha...",
 	"invalid_captcha": "Captcha invalide, veuillez réessayer.",
-
-	"cant_claim_until": "Vous ne pourrez plus réclamer le cadeau avant le %s",
-	"no_more_gifts": "Désolé, il n'y a plus de cadeaux disponibles ! (Veuillez contacter l'administrateur)",
+	"cant_claim_until": "Vous ne pouvez pas réclamer le cadeau avant %s",
+	"no_more_gifts": "Désolé, il n'y a plus de cadeaux disponibles ! (Veuillez contacter l'admin)",
 	"something_went_wrong": "Quelque chose s'est mal passé... Avez-vous déjà reçu un cadeau ce mois-ci ?",
-	"a_problem_occured": "Un problème est survenu lors de la tentative d'utilisation de votre cadeau. Veuillez réessayer plus tard.",
-	"congratulations": "Tebrikler! Hediyeniz oyun içi posta kutunuza gönderildi. Gidin ve kontrol edin!"
+	"a_problem_occured": "Un problème est survenu lors de l'échange de votre cadeau. Veuillez réessayer plus tard.",
+	"congratulations": "Félicitations ! Votre cadeau a été envoyé dans votre boîte aux lettres en jeu. Allez voir !"
 }

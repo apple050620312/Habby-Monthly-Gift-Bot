@@ -1,20 +1,18 @@
 {
-	"enter_id": "Insira o ID do jogador (dígitos)",
+	"enter_id": "Digite o ID do Jogador (Dígitos)",
 	"whats_your_id": "Qual é o seu ID de jogador no jogo?",
-	"invalid_id": "ID de jogador `%s` inválido. Verifique novamente.",
+	"invalid_id": "ID de Jogador inválido `%s`. Por favor, verifique novamente.",
 	"checking": "Verificando...",
-	
 	"fetching_captcha": "Buscando captcha...",
 	"get_captcha_fail": "Falha ao obter captcha. Tente novamente mais tarde.",
-	"answer_captcha_below": "Por favor responda o captcha abaixo",
+	"answer_captcha_below": "Por favor, responda o captcha abaixo",
 	"answer_captcha": "Responder captcha",
-	"whats_captcha_answer": "Qual é a resposta do captcha",
+	"whats_captcha_answer": "Qual é a resposta do captcha?",
 	"checking_captcha": "Verificando captcha...",
-	"invalid_captcha": "Captcha inválido, tente novamente.",
-
-	"cant_claim_until": "Você não poderá reivindicar o presente novamente até %s",
-	"no_more_gifts": "Desculpe, não há mais presentes disponíveis! (Entre em contato com o administrador)",
-	"something_went_wrong": "Algo deu errado... Você já recebeu algum presente esse mês?",
-	"a_problem_occured": "Ocorreu um problema ao tentar resgatar seu presente. Por favor, tente novamente mais tarde.",
-	"congratulations": "Parabéns! Seu presente foi enviado para a caixa de correio do jogo. Vá e confira!"
+	"invalid_captcha": "Captcha inválido, por favor tente novamente.",
+	"cant_claim_until": "Você não pode resgatar o presente novamente até %s",
+	"no_more_gifts": "Desculpe, não há mais presentes disponíveis! (Entre em contato com o admin)",
+	"something_went_wrong": "Algo deu errado... Você já recebeu um presente este mês?",
+	"a_problem_occured": "Um problema ocorreu ao tentar resgatar seu presente. Por favor, tente novamente mais tarde.",
+	"congratulations": "Parabéns! Seu presente foi enviado para sua caixa de correio no jogo. Vá conferir!"
 }

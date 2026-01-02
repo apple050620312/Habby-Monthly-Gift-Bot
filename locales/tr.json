@@ -1,20 +1,18 @@
 {
-	"enter_id": "Oyuncu Kimliğini Girin (Rakamlar)",
+	"enter_id": "Oyuncu ID Girin (Rakam)",
 	"whats_your_id": "Oyun içi oyuncu kimliğiniz nedir?",
-	"invalid_id": "Geçersiz Oyuncu Kimliği `%s`. Lütfen tekrar kontrol edin.",
+	"invalid_id": "Geçersiz Oyuncu ID `%s`. Lütfen tekrar kontrol edin.",
 	"checking": "Kontrol ediliyor...",
-	
 	"fetching_captcha": "Captcha alınıyor...",
 	"get_captcha_fail": "Captcha alınamadı. Daha sonra tekrar deneyin.",
-	"answer_captcha_below": "Lütfen aşağıdaki captcha'yı yanıtlayın",
-	"answer_captcha": "Captcha'yı yanıtla",
-	"whats_captcha_answer": "Captcha'nın cevabı nedir",
+	"answer_captcha_below": "Lütfen aşağıdaki captcha'yı cevaplayın",
+	"answer_captcha": "Captcha'yı cevapla",
+	"whats_captcha_answer": "Captcha cevabı nedir?",
 	"checking_captcha": "Captcha kontrol ediliyor...",
 	"invalid_captcha": "Geçersiz captcha, lütfen tekrar deneyin.",
-
-	"cant_claim_until": "%s tarihine kadar hediyeyi tekrar talep edemezsiniz",
-	"no_more_gifts": "Üzgünüm başka hediye yok! (Lütfen yöneticiyle iletişime geçin)",
+	"cant_claim_until": "Hediyeyi %s tarihine kadar tekrar talep edemezsiniz",
+	"no_more_gifts": "Üzgünüz, mevcut hediye kalmadı! (Lütfen yöneticiyle iletişime geçin)",
 	"something_went_wrong": "Bir şeyler ters gitti... Bu ay zaten bir hediye aldınız mı?",
-	"a_problem_occured": "Hediyenizi kullanmaya çalışırken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.",
-	"congratulations": "congratulations"
+	"a_problem_occured": "Hediyenizi almaya çalışırken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.",
+	"congratulations": "Tebrikler! Hediyeniz oyun içi posta kutunuza gönderildi. Gidip kontrol edin!"
 }

@@ -1,20 +1,18 @@
 {
-	"enter_id": "Masukkan ID Pemain (Digit)",
-	"whats_your_id": "Apa ID pemain dalam game Anda?",
-	"invalid_id": "ID Pemain `%s` tidak valid. Silakan periksa lagi.",
+	"enter_id": "Masukkan ID Pemain (Angka)",
+	"whats_your_id": "Berapa ID pemain di dalam game kamu?",
+	"invalid_id": "ID Pemain tidak valid `%s`. Silakan periksa lagi.",
 	"checking": "Memeriksa...",
-	
 	"fetching_captcha": "Mengambil captcha...",
-	"get_captcha_fail": "Gagal mendapatkan captcha. Coba lagi nanti.",
+	"get_captcha_fail": "Gagal mengambil captcha. Coba lagi nanti.",
 	"answer_captcha_below": "Silakan jawab captcha di bawah ini",
 	"answer_captcha": "Jawab captcha",
-	"whats_captcha_answer": "Apa jawaban captchanya",
+	"whats_captcha_answer": "Apa jawaban captcha-nya?",
 	"checking_captcha": "Memeriksa captcha...",
-	"invalid_captcha": "Captcha tidak valid, harap coba lagi.",
-
-	"cant_claim_until": "Anda tidak dapat mengklaim hadiah itu lagi hingga %s",
-	"no_more_gifts": "Maaf, tidak ada lagi hadiah yang tersedia! (Silakan hubungi Admin)",
-	"something_went_wrong": "Ada yang tidak beres... Apakah Anda sudah menerima hadiah bulan ini?",
-	"a_problem_occured": "Terjadi masalah saat mencoba menukarkan hadiah Anda. Silakan coba lagi nanti.",
-	"congratulations": "Selamat! Hadiah Anda telah dikirim ke kotak surat dalam game Anda. Pergi dan periksa!"
+	"invalid_captcha": "Captcha tidak valid, silakan coba lagi.",
+	"cant_claim_until": "Kamu tidak bisa mengklaim hadiah lagi sampai %s",
+	"no_more_gifts": "Maaf, tidak ada hadiah lagi yang tersedia! (Silakan hubungi admin)",
+	"something_went_wrong": "Ada yang salah... Apakah kamu sudah menerima hadiah bulan ini?",
+	"a_problem_occured": "Terjadi masalah saat mencoba menukarkan hadiahmu. Silakan coba lagi nanti.",
+	"congratulations": "Selamat! Hadiahmu telah dikirim ke kotak surat di dalam game. Segera periksa!"
 }

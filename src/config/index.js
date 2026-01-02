@@ -1,6 +1,6 @@
-require('dotenv').config()
+require('dotenv').config();
 
-function isDeveloper(uid) {
+const isDeveloper = (uid) => {
     switch (uid) {
         case '523114942434639873': //sangege
         case '000000000000000000': //RandomAdmin
@@ -8,10 +8,10 @@ function isDeveloper(uid) {
         default:
             return false;
     }
-}
+};
 
 module.exports = {
-    isDeveloper: isDeveloper,
+    isDeveloper,
     guildId: process.env.GUILD,
     logChannel: process.env.LOG_CHANNEL,
     adminChannel: process.env.ADMIN_CHANNEL,

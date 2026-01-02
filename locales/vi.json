@@ -1,20 +1,18 @@
 {
-	"enter_id": "Nhập ID người chơi (Chữ số)",
-	"whats_your_id": "ID người chơi trong trò chơi của bạn là gì?",
-	"invalid_id": "ID người chơi không hợp lệ `%s`. Vui lòng kiểm tra lại.",
+	"enter_id": "Nhập ID Người chơi (Số)",
+	"whats_your_id": "ID người chơi trong game của bạn là gì?",
+	"invalid_id": "ID Người chơi không hợp lệ `%s`. Vui lòng kiểm tra lại.",
 	"checking": "Đang kiểm tra...",
-	
-	"fetching_captcha": "Đang tìm nạp hình ảnh xác thực...",
-	"get_captcha_fail": "Không nhận được hình ảnh xác thực. Hãy thử lại sau.",
+	"fetching_captcha": "Đang lấy captcha...",
+	"get_captcha_fail": "Không lấy được captcha. Vui lòng thử lại sau.",
 	"answer_captcha_below": "Vui lòng trả lời captcha bên dưới",
-	"answer_captcha": "Trả lời hình ảnh xác thực",
-	"whats_captcha_answer": "Câu trả lời của captcha là gì",
-	"checking_captcha": "Đang kiểm tra hình ảnh xác thực...",
-	"invalid_captcha": "Hình ảnh xác thực không hợp lệ, vui lòng thử lại.",
-
-	"cant_claim_until": "Bạn không thể nhận lại quà tặng cho đến %s",
-	"no_more_gifts": "Rất tiếc không còn quà nữa! (Vui lòng liên hệ quản trị viên)",
-	"something_went_wrong": "Đã xảy ra lỗi... Bạn đã nhận được quà tháng này chưa?",
-	"a_problem_occured": "Đã xảy ra sự cố khi cố gắng đổi quà của bạn. Vui lòng thử lại sau.",
-	"congratulations": "Chúc mừng! Quà tặng của bạn đã được gửi tới hộp thư trong trò chơi. Đi và kiểm tra xem nó ra!"
+	"answer_captcha": "Trả lời captcha",
+	"whats_captcha_answer": "Câu trả lời captcha là gì?",
+	"checking_captcha": "Đang kiểm tra captcha...",
+	"invalid_captcha": "Captcha không hợp lệ, vui lòng thử lại.",
+	"cant_claim_until": "Bạn không thể nhận quà lại cho đến %s",
+	"no_more_gifts": "Xin lỗi, không còn quà nào! (Vui lòng liên hệ admin)",
+	"something_went_wrong": "Có gì đó không ổn... Bạn đã nhận quà trong tháng này chưa?",
+	"a_problem_occured": "Đã xảy ra sự cố khi cố gắng đổi quà. Vui lòng thử lại sau.",
+	"congratulations": "Chúc mừng! Quà của bạn đã được gửi đến hòm thư trong game. Hãy đi kiểm tra ngay!"
 }
