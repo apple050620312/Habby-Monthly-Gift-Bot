@@ -23,7 +23,7 @@
 	"fetching_code": "Mengambil kode. Tunggu sebentar.",
 	"your_code_is": "Kode Anda adalah `%s`!",
 	"no_valid_codes": "Tidak ada kode valid yang diberikan.",
-	"max_codes_limit": "Maksimal 5 kode per baris/pesan diizinkan saat ini.",
+	"max_codes_limit": "Maks 25 kode per pesan diizinkan (Batas Discord).",
 	"posted_buttons": "Memposting %s tombol!",
     "purge_start": "Memulai pembersihan untuk mencapai ukuran target: %s MiB. Saat ini: %s MiB",
     "purge_progress": "Membersihkan %s data dari %s... Ukuran baru: %s MiB",

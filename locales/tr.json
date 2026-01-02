@@ -23,7 +23,7 @@
 	"fetching_code": "Kod alınıyor. Bir saniye bekleyin.",
 	"your_code_is": "Kodunuz `%s`!",
 	"no_valid_codes": "Geçerli kod sağlanmadı.",
-	"max_codes_limit": "Şimdilik satır/mesaj başına en fazla 5 kod izin veriliyor.",
+	"max_codes_limit": "Mesaj başına en fazla 25 kod izin veriliyor (Discord Sınırı).",
 	"posted_buttons": "%s buton gönderildi!",
     "purge_start": "Hedef boyuta ulaşmak için temizlik başlatılıyor: %s MiB. Mevcut: %s MiB",
     "purge_progress": "%s kayıt %s tarihinden silindi... Yeni boyut: %s MiB",

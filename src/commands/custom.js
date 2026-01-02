@@ -33,7 +33,7 @@ module.exports = {
         if (codes.length === 0) {
             return await interaction.reply({ content: interaction.__('no_valid_codes'), ephemeral: true });
         }
-        if (codes.length > 5) {
+        if (codes.length > 25) {
              return await interaction.reply({ content: interaction.__('max_codes_limit'), ephemeral: true });
         }
 
@@ -41,20 +41,28 @@ module.exports = {
             return await interaction.reply({ content: interaction.__('permission_error'), ephemeral: true });
         }
 
-        const row = new ActionRowBuilder();
+        const rows = [];
+        let currentRow = new ActionRowBuilder();
         
-        codes.forEach(code => {
-            row.addComponents(
+        codes.forEach((code, index) => {
+            if (index > 0 && index % 5 === 0) {
+                rows.push(currentRow);
+                currentRow = new ActionRowBuilder();
+            }
+            currentRow.addComponents(
                 new ButtonBuilder()
                     .setCustomId(`manualRedeem-${code}`)
-                    .setLabel(code) // Use code as label
-                    .setStyle(ButtonStyle.Success) // Different style for specific codes? Or Primary.
+                    .setLabel(code)
+                    .setStyle(ButtonStyle.Success)
             );
         });
+        if (currentRow.components.length > 0) {
+            rows.push(currentRow);
+        }
 
         await channel.send({
             content: message,
-            components: [row]
+            components: rows
         });
 
         return await interaction.reply({ content: interaction.__('posted_buttons', codes.length), ephemeral: true });

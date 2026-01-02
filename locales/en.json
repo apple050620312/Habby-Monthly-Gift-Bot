@@ -23,7 +23,7 @@
     "fetching_code": "Fetching a code. Hold on one moment.",
     "your_code_is": "Your code is `%s`!",
     "no_valid_codes": "No valid codes provided.",
-    "max_codes_limit": "Max 5 codes per row/message allowed for now.",
+    "max_codes_limit": "Max 25 codes per message allowed (Discord Limit).",
     "posted_buttons": "Posted %s buttons!",
     "purge_start": "Starting purge to hit target size: %s MiB. Current: %s MiB",
     "purge_progress": "Purged %s records from %s... New size: %s MiB",

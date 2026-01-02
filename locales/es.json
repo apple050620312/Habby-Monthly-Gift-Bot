@@ -23,7 +23,7 @@
 	"fetching_code": "Obteniendo un código. Un momento por favor.",
 	"your_code_is": "¡Tu código es `%s`!",
 	"no_valid_codes": "No se proporcionaron códigos válidos.",
-	"max_codes_limit": "Máximo 5 códigos por fila/mensaje permitidos por ahora.",
+	"max_codes_limit": "Máx. 25 códigos por mensaje permitidos (límite de Discord).",
 	"posted_buttons": "¡Publicados %s botones!",
     "purge_start": "Iniciando purga para alcanzar tamaño objetivo: %s MiB. Actual: %s MiB",
     "purge_progress": "Purgados %s registros de %s... Nuevo tamaño: %s MiB",

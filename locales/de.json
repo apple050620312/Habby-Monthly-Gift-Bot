@@ -23,7 +23,7 @@
 	"fetching_code": "Code wird abgerufen. Einen Moment bitte.",
 	"your_code_is": "Dein Code lautet `%s`!",
 	"no_valid_codes": "Keine gültigen Codes angegeben.",
-	"max_codes_limit": "Maximal 5 Codes pro Zeile/Nachricht erlaubt.",
+	"max_codes_limit": "Maximal 25 Codes pro Nachricht erlaubt (Discord-Limit).",
 	"posted_buttons": "%s Buttons gepostet!",
     "purge_start": "Starte Bereinigung, um Zielgröße zu erreichen: %s MiB. Aktuell: %s MiB",
     "purge_progress": "%s Datensätze von %s bereinigt... Neue Größe: %s MiB",

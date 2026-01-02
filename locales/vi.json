@@ -23,7 +23,7 @@
 	"fetching_code": "Đang lấy mã. Chờ một chút.",
 	"your_code_is": "Mã của bạn là `%s`!",
 	"no_valid_codes": "Không có mã hợp lệ nào được cung cấp.",
-	"max_codes_limit": "Hiện tại chỉ cho phép tối đa 5 mã mỗi hàng/tin nhắn.",
+	"max_codes_limit": "Tối đa 25 mã mỗi tin nhắn (Giới hạn Discord).",
 	"posted_buttons": "Đã đăng %s nút!",
     "purge_start": "Bắt đầu dọn dẹp để đạt kích thước mục tiêu: %s MiB. Hiện tại: %s MiB",
     "purge_progress": "Đã dọn %s bản ghi từ %s... Kích thước mới: %s MiB",

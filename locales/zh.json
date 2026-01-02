@@ -23,7 +23,7 @@
 	"fetching_code": "正在獲取代碼。請稍候。",
 	"your_code_is": "您的代碼是 `%s`！",
 	"no_valid_codes": "未提供有效代碼。",
-	"max_codes_limit": "目前每行/每條訊息最多允許 5 個代碼。",
+	"max_codes_limit": "每條訊息最多允許 25 個代碼 (Discord 限制)。",
 	"posted_buttons": "已發布 %s 個按鈕！",
     "purge_start": "開始清理以達到目標大小：%s MiB。當前：%s MiB",
     "purge_progress": "已從 %s 清理 %s 條記錄... 新大小：%s MiB",

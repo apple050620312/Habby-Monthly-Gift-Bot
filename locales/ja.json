@@ -23,7 +23,7 @@
 	"fetching_code": "コードを取得しています。少々お待ちください。",
 	"your_code_is": "あなたのコードは `%s` です！",
 	"no_valid_codes": "有効なコードが提供されませんでした。",
-	"max_codes_limit": "現在、1行/メッセージにつき最大5つのコードまで許可されています。",
+	"max_codes_limit": "メッセージごとに最大25個のコードが許可されています（Discordの制限）。",
 	"posted_buttons": "%s 個のボタンを投稿しました！",
     "purge_start": "目標サイズ %s MiB に到達するためのパージを開始します。現在: %s MiB",
     "purge_progress": "%s から %s 件のレコードを削除しました... 新しいサイズ: %s MiB",

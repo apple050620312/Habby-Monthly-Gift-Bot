@@ -23,7 +23,7 @@
 	"fetching_code": "코드를 가져오고 있습니다. 잠시만 기다려주세요.",
 	"your_code_is": "당신의 코드는 `%s`입니다!",
 	"no_valid_codes": "유효한 코드가 제공되지 않았습니다.",
-	"max_codes_limit": "현재 줄/메시지당 최대 5개의 코드만 허용됩니다.",
+	"max_codes_limit": "메시지당 최대 25개의 코드만 허용됩니다 (Discord 제한).",
 	"posted_buttons": "%s개의 버튼을 게시했습니다!",
     "purge_start": "목표 크기 %s MiB에 도달하기 위해 정리를 시작합니다. 현재: %s MiB",
     "purge_progress": "%s에서 %s개의 레코드를 정리했습니다... 새로운 크기: %s MiB",

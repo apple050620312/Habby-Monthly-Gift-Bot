@@ -23,7 +23,7 @@
 	"fetching_code": "Récupération d'un code. Un instant SVP.",
 	"your_code_is": "Votre code est `%s` !",
 	"no_valid_codes": "Aucun code valide fourni.",
-	"max_codes_limit": "Max 5 codes par ligne/message autorisés pour l'instant.",
+	"max_codes_limit": "Max 25 codes par message autorisés (Limite Discord).",
 	"posted_buttons": "%s boutons publiés !",
     "purge_start": "Démarrage du nettoyage pour atteindre la taille cible : %s MiB. Actuel : %s MiB",
     "purge_progress": "Nettoyé %s enregistrements de %s... Nouvelle taille : %s MiB",
