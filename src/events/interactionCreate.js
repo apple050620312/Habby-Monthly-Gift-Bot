@@ -77,7 +77,10 @@ module.exports = {
                     return await interaction.editReply({ content: interaction.__('Invalid PlayerID \`%s\`. Please check again.', playerId), ephemeral: true });
                 }
 
-                if (!await checkCanClaim(interaction, playerId)) return;
+                // Only check cooldown for RANDOM bot codes (!targetCode)
+                if (!targetCode) {
+                    if (!await checkCanClaim(interaction, playerId)) return;
+                }
 
                 await interaction.editReply({ content: interaction.__('fetching_captcha'), ephemeral: true });
                 return await presentCaptcha(interaction, playerId, targetCode);
@@ -103,7 +106,11 @@ module.exports = {
                     return await presentCaptcha(interaction, playerId, targetCode);
                 }
 
-                if (!await checkCanClaim(interaction, playerId)) return;
+                // Only check cooldown for RANDOM bot codes (!targetCode). 
+                // Manual codes (targetCode) bypass the monthly bot limit because they are external/public codes.
+                if (!targetCode) {
+                    if (!await checkCanClaim(interaction, playerId)) return;
+                }
 
                 let codeToRedeem = targetCode;
                 let row = null;
@@ -208,8 +215,17 @@ module.exports = {
                          return await interaction.editReply({ content: interaction.__('Invalid PlayerID \`%s\`. Please check again.', playerId), ephemeral: true });
 
                     default:
-                        logger.error(`Unknown error code: ${result.code}`);
-                        return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
+                        if (targetCode) {
+                            // [Manual/Custom Code]
+                            // User requested suppression of logs for manual codes
+                            // User Update: "message should say that you might already redeemed this code"
+                            return await interaction.editReply({ content: interaction.__('already_redeemed'), ephemeral: true });
+                        } else {
+                            // [Monthly Code]
+                            logger.error(`Unknown error code: ${result.code}`);
+                            if (logChannel) logChannel.send(`[ERROR] Unknown error code ${result.code} for code ${codeToRedeem}`);
+                            return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
+                        }
                 }
             }
         }

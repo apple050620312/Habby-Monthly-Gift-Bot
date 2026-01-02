@@ -30,5 +30,6 @@
     "purge_complete": "Nettoyage terminé ! Taille finale : %s MiB",
     "purge_error": "Erreur pendant le nettoyage : %s",
     "purge_no_action": "La base de données est déjà plus petite que la taille cible.",
-    "already_redeemed": "Vous avez peut-être déjà utilisé ce code ou il a expiré."
+    "already_redeemed": "Vous avez peut-être déjà utilisé ce code ou il a expiré.",
+    "redeem_error": "Quelque chose s'est mal passé. Veuillez réessayer plus tard."
 }

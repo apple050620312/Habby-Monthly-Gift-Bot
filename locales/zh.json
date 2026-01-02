@@ -30,5 +30,6 @@
     "purge_complete": "清理完成！最終大小：%s MiB",
     "purge_error": "清理過程中發生錯誤：%s",
     "purge_no_action": "資料庫已小於目標大小。",
-    "already_redeemed": "您可能已經兌換過此代碼或代碼已過期。"
+    "already_redeemed": "您可能已經兌換過此代碼或代碼已過期。",
+    "redeem_error": "出了點問題。請稍後再試。"
 }

@@ -30,5 +30,6 @@
     "purge_complete": "Dọn dẹp hoàn tất! Kích thước cuối cùng: %s MiB",
     "purge_error": "Lỗi trong quá trình dọn dẹp: %s",
     "purge_no_action": "Cơ sở dữ liệu đã nhỏ hơn kích thước mục tiêu.",
-    "already_redeemed": "Bạn có thể đã đổi mã này hoặc mã đã hết hạn."
+    "already_redeemed": "Bạn có thể đã đổi mã này hoặc mã đã hết hạn.",
+    "redeem_error": "Đã xảy ra lỗi. Vui lòng thử lại sau."
 }
