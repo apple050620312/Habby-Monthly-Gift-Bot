@@ -5,6 +5,7 @@ const config = require('./config');
 const db = require('./database/db');
 const logger = require('./utils/logger');
 const { applyLang } = require('./utils/i18n');
+const { deployCommands } = require('../deploy');
 
 const client = new Client({
     intents: [
@@ -49,12 +50,16 @@ function loadEvents() {
     }
 }
 
-function start() {
+async function start() {
     const startTime = Date.now();
     applyLang({}); // Test for logging errors at start
     db.init();
     db.logStats();
     logger.info(`Done loading codes! ${(Date.now() - startTime) / 1000}s`);
+    
+    // Auto-deploy commands on startup
+    await deployCommands();
+    
     loadCommands();
     loadEvents();
     
