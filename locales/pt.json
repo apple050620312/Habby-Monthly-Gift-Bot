@@ -31,5 +31,6 @@
     "purge_error": "Erro durante a limpeza: %s",
     "purge_no_action": "O banco de dados já é menor que o tamanho alvo.",
     "already_redeemed": "Você pode já ter resgatado este código ou ele expirou.",
-    "redeem_error": "Algo deu errado. Por favor, tente novamente mais tarde."
+    "redeem_error": "Algo deu errado. Por favor, tente novamente mais tarde.",
+    "edited_success": "Mensagem atualizada com sucesso!"
 }

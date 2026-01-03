@@ -31,5 +31,6 @@
     "purge_error": "Error durante la purga: %s",
     "purge_no_action": "La base de datos ya es más pequeña que el tamaño objetivo.",
     "already_redeemed": "Es posible que ya hayas canjeado este código o que haya caducado.",
-    "redeem_error": "Algo salió mal. Por favor, inténtalo de nuevo más tarde."
+    "redeem_error": "Algo salió mal. Por favor, inténtalo de nuevo más tarde.",
+    "edited_success": "¡Mensaje actualizado con éxito!"
 }

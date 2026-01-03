@@ -31,5 +31,6 @@
     "purge_error": "Lỗi trong quá trình dọn dẹp: %s",
     "purge_no_action": "Cơ sở dữ liệu đã nhỏ hơn kích thước mục tiêu.",
     "already_redeemed": "Bạn có thể đã đổi mã này hoặc mã đã hết hạn.",
-    "redeem_error": "Đã xảy ra lỗi. Vui lòng thử lại sau."
+    "redeem_error": "Đã xảy ra lỗi. Vui lòng thử lại sau.",
+    "edited_success": "Cập nhật tin nhắn thành công!"
 }

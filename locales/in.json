@@ -31,5 +31,6 @@
     "purge_error": "Kesalahan selama pembersihan: %s",
     "purge_no_action": "Database sudah lebih kecil dari ukuran target.",
     "already_redeemed": "Anda mungkin sudah menukarkan kode ini atau kodenya sudah kadaluwarsa.",
-    "redeem_error": "Ada yang salah. Silakan coba lagi nanti."
+    "redeem_error": "Ada yang salah. Silakan coba lagi nanti.",
+    "edited_success": "Pesan berhasil diperbarui!"
 }

@@ -31,5 +31,6 @@
     "purge_error": "Error during purge: %s",
     "purge_no_action": "Database is already smaller than target size.",
     "already_redeemed": "You might have already redeemed this code or it has expired.",
-    "redeem_error": "Something went wrong. Please try again later."
+    "redeem_error": "Something went wrong. Please try again later.",
+    "edited_success": "Message updated successfully!"
 }

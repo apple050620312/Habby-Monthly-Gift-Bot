@@ -31,5 +31,6 @@
     "purge_error": "Errore durante la pulizia: %s",
     "purge_no_action": "Il database è già più piccolo della dimensione target.",
     "already_redeemed": "Potresti aver già riscattato questo codice o è scaduto.",
-    "redeem_error": "Qualcosa è andato storto. Per favore riprova più tardi."
+    "redeem_error": "Qualcosa è andato storto. Per favore riprova più tardi.",
+    "edited_success": "Messaggio aggiornato con successo!"
 }

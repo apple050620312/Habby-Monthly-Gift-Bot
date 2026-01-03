@@ -31,5 +31,6 @@
     "purge_error": "Fehler während der Bereinigung: %s",
     "purge_no_action": "Datenbank ist bereits kleiner als die Zielgröße.",
     "already_redeemed": "Du hast diesen Code möglicherweise bereits eingelöst oder er ist abgelaufen.",
-    "redeem_error": "Etwas ist schief gelaufen. Bitte versuche es später erneut."
+    "redeem_error": "Etwas ist schief gelaufen. Bitte versuche es später erneut.",
+    "edited_success": "Nachricht erfolgreich aktualisiert!"
 }

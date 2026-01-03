@@ -15,8 +15,12 @@ module.exports = {
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('codes')
-                .setDescription('Comma separated list of codes (e.g. Code1, Code2)')
-                .setRequired(true))
+            .setDescription('Comma separated list of codes (e.g. Code1, Code2)')
+            .setRequired(true))
+        .addStringOption(option =>
+            option.setName('message_id')
+                .setDescription('Optional: Message ID to edit instead of sending new')
+                .setRequired(false))
         .setDMPermission(false),
     async execute(interaction) {
         if (!config.isDeveloper(interaction.user.id) && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
@@ -24,8 +28,9 @@ module.exports = {
         }
 
         const channel = interaction.options.getChannel('channel');
-        const message = interaction.options.getString('message');
+        const messageContent = interaction.options.getString('message');
         const codesString = interaction.options.getString('codes');
+        const messageId = interaction.options.getString('message_id');
         
         // Split and clean codes
         const codes = codesString.split(',').map(c => c.trim()).filter(c => c.length > 0);
@@ -60,11 +65,26 @@ module.exports = {
             rows.push(currentRow);
         }
 
-        await channel.send({
-            content: message,
-            components: rows
-        });
-
-        return await interaction.reply({ content: interaction.__('posted_buttons', codes.length), ephemeral: true });
+        if (messageId) {
+            try {
+                const targetMessage = await channel.messages.fetch(messageId);
+                if (!targetMessage) {
+                    return await interaction.reply({ content: "Message not found in that channel.", ephemeral: true });
+                }
+                await targetMessage.edit({
+                    content: messageContent,
+                    components: rows
+                });
+                return await interaction.reply({ content: interaction.__('edited_success'), ephemeral: true });
+            } catch (error) {
+                return await interaction.reply({ content: `Failed to edit message: ${error.message}`, ephemeral: true });
+            }
+        } else {
+            await channel.send({
+                content: messageContent,
+                components: rows
+            });
+            return await interaction.reply({ content: interaction.__('posted_buttons', codes.length), ephemeral: true });
+        }
     },
 };
