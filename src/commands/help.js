@@ -7,9 +7,9 @@ module.exports = {
         .setDescription('Shows available commands'),
     async execute(interaction) {
         let text = `**User Commands:**\n\`/redeem\` - Redeem a specific gift code\n\`/about\` - View bot information\n\n`;
-        
+
         const isAdmin = config.isDeveloper(interaction.user.id) || (interaction.member && interaction.member.permissions.has('Administrator'));
-        
+
         if (isAdmin) {
             text += `**Admin Commands:**
 \`/codes upload\` - Upload new codes (TXT/CSV)
@@ -22,6 +22,6 @@ module.exports = {
 \`/lookup\` - Search claim history by user or player ID
 `;
         }
-        await interaction.reply({ content: text, ephemeral: true });
+        await interaction.reply({ content: text, ephemeral: false });
     }
 };
