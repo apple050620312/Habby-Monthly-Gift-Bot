@@ -37,7 +37,29 @@ npm start
 ```
 
 ## Usage & Features
-1. Use the `/help` slash command to see a list of commands available to you. Regular users can use `/about` and `/redeem`.
-2. Admins can upload new gift codes directly through Discord using the `/upload` slash command. It accepts both `.txt` and `.csv` attachments!
-3. **Future Codes**: `/upload` allows you to specify a future month (e.g. `YYYY-MM`), safely holding codes until their designated time.
-4. **Auto-Purge**: The bot autonomously checks the database size every 6 hours and will naturally prune the oldest records if it exceeds `DB_MAX_SIZE_MB`.
+## Command Reference
+
+### Normal User Commands
+- `/redeem [code]`: (Optional string). Triggers the secure, ephemeral claim flow. If a code is provided, it tries to claim that specific code. Otherwise, it pulls from the monthly code pool.
+- `/about`: Shows bot ping, latency, and developer credits.
+- `/help`: Lists available commands.
+
+### Admin Commands (Grouped)
+Admin commands are grouped by function and restricted to users with the **Administrator** permission or listed in `DEVELOPER_IDS`.
+
+#### 1. Code Lifecycle Management (`/codes`)
+- **`/codes upload [file] [type] [month]`**: Bulk upload gift codes from a `.txt` or `.csv` file. You can attach a future month (e.g. `2024-05`) for them to unlock.
+- **`/codes remove [type] [month]`**: Clean up unused codes by month if a mistake was made during upload. Keeps claimed code history intact.
+- **`/codes get`**: Fetches a single unused code directly for manual distribution.
+
+#### 2. Interactive Buttons (`/button`)
+- **`/button monthly [channel] [message] [label]`**: Posts the primary claim button for users to get random monthly codes.
+- **`/button custom [channel] [message] [codes]`**: Posts specific claim buttons that you manually type out (comma-separated). 
+
+#### 3. System Health (`/system`)
+- **`/system status`**: Checks API/WS latency, Database read time, Database file size, and provides a statistical breakdown of how many codes remain active.
+- **`/system backup`**: Sends a downloadable copy of `database.sqlite` directly to the channel.
+
+#### 4. Audit & Lookup (`/lookup`)
+- **`/lookup user [@User | Discord ID]`**: Shows the claim history of a specific Discord account.
+- **`/lookup id [Player ID]`**: Shows the claim history of a specific game Player ID.

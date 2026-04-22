@@ -12,15 +12,14 @@ module.exports = {
         
         if (isAdmin) {
             text += `**Admin Commands:**
-\`/status\` - Checks bot status
-\`/upload\` - Upload new codes (TXT/CSV)
-\`/reset\` - Deletes all codes and backs up DB
-\`/backup\` - Backup DB
-\`/post\` - Post the random code button
-\`/custom\` - Post buttons for specific codes
-\`/code\` - Get a single code directly
-\`/lookup user\` - Lookup player history by discord user
-\`/lookup id\` - Lookup player history by player ID
+\`/codes upload\` - Upload new codes (TXT/CSV)
+\`/codes remove\` - Remove unused gift codes by month
+\`/codes get\` - Manually fetch an unused code
+\`/button monthly\` - Post the monthly random code button
+\`/button custom\` - Post a button for specific custom codes
+\`/system status\` - Checks bot and database status
+\`/system backup\` - Download a copy of the database
+\`/lookup\` - Search claim history by user or player ID
 `;
         }
         await interaction.reply({ content: text, ephemeral: true });

@@ -60,10 +60,7 @@ function recordClaim(discordId, playerId, code) {
     return db.prepare(`INSERT INTO players(discordid, playerid, code, date) VALUES(?, ?, ?, ?)`).run(discordId, playerId, code, Date.now());
 }
 
-function resetCodes() {
-    db.prepare('DELETE FROM nitro_codes').run();
-    db.prepare('DELETE FROM codes').run();
-}
+
 
 // Add codes from array
 function addCodes(codeArray, type = 'normal', activeMonth = null) {
@@ -81,6 +78,21 @@ function addCodes(codeArray, type = 'normal', activeMonth = null) {
     insertMany(codeArray);
 }
 
+// Remove unused codes for a specific month
+function removeMonthCodes(type, month) {
+    const table = type === 'nitro' ? 'nitro_codes' : 'codes';
+    
+    let stmt;
+    if (month === 'active') {
+        stmt = db.prepare(`DELETE FROM ${table} WHERE used=FALSE AND active_month IS NULL`);
+    } else {
+        stmt = db.prepare(`DELETE FROM ${table} WHERE used=FALSE AND active_month = ?`);
+    }
+
+    const info = month === 'active' ? stmt.run() : stmt.run(month);
+    return info.changes;
+}
+
 module.exports = {
     init,
     getStats,
@@ -91,8 +103,9 @@ module.exports = {
     getUnusedCode,
     markCodeUsed,
     recordClaim,
-    resetCodes,
+
     addCodes,
+    removeMonthCodes,
     getDb: () => db,
     logStats: () => {
         const stats = getStats();
