@@ -44,6 +44,6 @@ module.exports = {
             ]
         });
 
-        return await interaction.reply({ content: interaction.__('posted_success'), ephemeral: true });
+        return await interaction.reply({ content: interaction.__('posted_success'), ephemeral: false });
     },
 };

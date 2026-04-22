@@ -22,9 +22,19 @@ module.exports = {
                 return await interaction.reply(interaction.__('no_dm'));
             }
             if (!config.isDeveloper(interaction.user.id) && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-                 
                  if (interaction.commandName !== 'redeem' && interaction.commandName !== 'help' && interaction.commandName !== 'about') {
                      return await interaction.reply({ content: interaction.__('only_admins'), ephemeral: true });
+                 }
+            } else {
+                 if (interaction.commandName !== 'redeem' && interaction.commandName !== 'help' && interaction.commandName !== 'about') {
+                     if (!interaction.channel.isDMBased()) {
+                         const everyoneCanView = interaction.channel.permissionsFor(interaction.guild.roles.everyone).has(PermissionsBitField.Flags.ViewChannel);
+                         const viewableCount = everyoneCanView ? interaction.guild.memberCount : interaction.channel.members.size;
+                         
+                         if (viewableCount > 100) {
+                             return await interaction.reply({ content: "❌ For security, admin commands cannot be run in a channel with more than 100 viewable members. Please use a private admin channel.", ephemeral: true });
+                         }
+                     }
                  }
             }
 
@@ -145,6 +155,12 @@ module.exports = {
 
                 const logChannel = client.channels.cache.get(config.logChannel);
 
+                const announce = async (text) => {
+                    if (!interaction.channel.isDMBased()) {
+                        await interaction.channel.send(`<@${interaction.user.id}> | ${text}`).catch(() => {});
+                    }
+                };
+
                 switch (result.code) {
                     case 0: // Success
                          // User Request: "if success need to log in to database as monthly codes does"
@@ -171,6 +187,7 @@ module.exports = {
                              logChannel.send(`[REDEEM] Discord: ${interaction.member} \`${interaction.user.username}\` PlayerID: \`${playerId}\` Code: \`${codeToRedeem}\` Locale: \`${interaction.locale}\``);
                          }
                          logger.info(`Redeem success Discord: ${interaction.user.username} PlayerID: ${playerId} Code: ${codeToRedeem} Locale: ${interaction.locale}`);
+                         await announce(`🎉 ${interaction.__('congratulations')}`);
                          return await interaction.editReply({ content: interaction.__('congratulations'), ephemeral: true });
                     
                     case 20402: // Already claimed, or repeatable code limit reached
@@ -178,6 +195,7 @@ module.exports = {
                              // [Manual/Custom Code]
                              // Quiet failure for user input codes (likely already redeemed by them)
                              if (logChannel) logChannel.send(`[INFO] Discord: ${interaction.member} - Custom Code ${codeToRedeem} already redeemed/limit.`);
+                             await announce(`❌ ${interaction.__('already_redeemed')}`);
                              return await interaction.editReply({ content: interaction.__('already_redeemed'), ephemeral: true });
                          } else {
                              // [Monthly Code from DB]
@@ -189,6 +207,7 @@ module.exports = {
                              db.markCodeUsed(table, codeToRedeem);
                              
                              // Generic error because this shouldn't happen to a fresh monthly code
+                             await announce(`❌ ${interaction.__('something_went_wrong')}`);
                              return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
                          }
 
@@ -197,6 +216,7 @@ module.exports = {
                              // [Manual/Custom Code]
                              // User typed something wrong or old code
                              if (logChannel) logChannel.send(`[FAIL] Manual Code Invalid/Expire \`${codeToRedeem}\` ${result.code}`);
+                             await announce(`❌ ${interaction.__('already_redeemed')}`);
                              return await interaction.editReply({ content: interaction.__('already_redeemed'), ephemeral: true });
                          } else {
                              // [Monthly Code from DB]
@@ -206,6 +226,7 @@ module.exports = {
                              
                              db.markCodeUsed(table, codeToRedeem);
                              
+                             await announce(`❌ ${interaction.__('something_went_wrong')}`);
                              return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
                          }
                     
@@ -214,6 +235,7 @@ module.exports = {
 
                     case 20003: // Bad Player ID
                          if (logChannel) logChannel.send(`[FAIL] Bad Player ID: ${playerId}`);
+                         await announce(`❌ ${interaction.__('Invalid PlayerID \\`%s\\`. Please check again.', playerId)}`);
                          return await interaction.editReply({ content: interaction.__('Invalid PlayerID \`%s\`. Please check again.', playerId), ephemeral: true });
 
                     default:
@@ -221,11 +243,13 @@ module.exports = {
                             // [Manual/Custom Code]
                             // User requested suppression of logs for manual codes
                             // User Update: "message should say that you might already redeemed this code"
+                            await announce(`❌ ${interaction.__('already_redeemed')}`);
                             return await interaction.editReply({ content: interaction.__('already_redeemed'), ephemeral: true });
                         } else {
                             // [Monthly Code]
                             logger.error(`Unknown error code: ${result.code}`);
                             if (logChannel) logChannel.send(`[ERROR] Unknown error code ${result.code} for code ${codeToRedeem}`);
+                            await announce(`❌ ${interaction.__('something_went_wrong')}`);
                             return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
                         }
                 }

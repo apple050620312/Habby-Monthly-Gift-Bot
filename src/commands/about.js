@@ -12,6 +12,6 @@ module.exports = {
 GitHub: https://github.com/apple050620312/Habby-Monthly-Gift-Bot
 API Ping: ${apiPing}ms | WS Ping: ${wsPing}ms`;
         
-        await interaction.reply({ content, ephemeral: true });
+        await interaction.reply({ content, ephemeral: false });
     }
 };

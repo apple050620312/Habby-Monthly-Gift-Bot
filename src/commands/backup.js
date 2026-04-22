@@ -14,7 +14,7 @@ module.exports = {
         await interaction.reply({ 
             content: "Here you go :)", 
             files: [new AttachmentBuilder('database.sqlite')], 
-            ephemeral: true 
+            ephemeral: false 
         });
     },
 };

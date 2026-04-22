@@ -75,7 +75,7 @@ module.exports = {
                     content: messageContent,
                     components: rows
                 });
-                return await interaction.reply({ content: interaction.__('edited_success'), ephemeral: true });
+                return await interaction.reply({ content: interaction.__('edited_success'), ephemeral: false });
             } catch (error) {
                 return await interaction.reply({ content: `Failed to edit message: ${error.message}`, ephemeral: true });
             }
@@ -84,7 +84,7 @@ module.exports = {
                 content: messageContent,
                 components: rows
             });
-            return await interaction.reply({ content: interaction.__('posted_buttons', codes.length), ephemeral: true });
+            return await interaction.reply({ content: interaction.__('posted_buttons', codes.length), ephemeral: false });
         }
     },
 };

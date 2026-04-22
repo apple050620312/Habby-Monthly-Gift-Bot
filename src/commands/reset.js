@@ -17,7 +17,7 @@ module.exports = {
             await interaction.reply({
                 content: "Clearing DB of used codes! Check /status", 
                 files: [new AttachmentBuilder('database.sqlite')],
-                ephemeral: true
+                ephemeral: false
             });
             db.resetCodes();
         } catch (e) {

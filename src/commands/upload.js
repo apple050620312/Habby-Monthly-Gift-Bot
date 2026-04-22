@@ -40,7 +40,7 @@ module.exports = {
              return await interaction.reply({ content: "Invalid month format. Please use YYYY-MM (e.g., 2024-05).", ephemeral: true });
         }
 
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ ephemeral: false });
 
         try {
             const response = await axios.get(attachment.url, { responseType: 'text' });
