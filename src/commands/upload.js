@@ -43,18 +43,48 @@ module.exports = {
         await interaction.deferReply({ ephemeral: false });
 
         try {
-            const response = await axios.get(attachment.url, { responseType: 'text' });
-            const text = response.data;
-
-            const codes = text.split(/[\r\n,]+/).map(c => c.trim()).filter(c => c.length > 0);
+            const response = await axios.get(attachment.url, { responseType: 'stream' });
+            const readline = require('readline');
             
-            if (codes.length === 0) {
+            const rl = readline.createInterface({
+                input: response.data,
+                crlfDelay: Infinity
+            });
+
+            let totalCodes = 0;
+            let chunk = [];
+            
+            for await (const line of rl) {
+                const parts = line.split(/[\r\n,]+/);
+                for (let p of parts) {
+                    p = p.trim();
+                    if (p.length > 0) {
+                        chunk.push(p);
+                    }
+                }
+                
+                if (chunk.length >= 10000) {
+                    db.addCodes(chunk, type, month || null);
+                    totalCodes += chunk.length;
+                    chunk = [];
+                }
+            }
+            
+            if (chunk.length > 0) {
+                db.addCodes(chunk, type, month || null);
+                totalCodes += chunk.length;
+                chunk = [];
+            }
+
+            if (global.gc) {
+                global.gc();
+            }
+
+            if (totalCodes === 0) {
                  return await interaction.editReply({ content: "The uploaded file is empty or contains no valid codes." });
             }
 
-            db.addCodes(codes, type, month || null);
-
-            return await interaction.editReply({ content: `Successfully uploaded ${codes.length} ${type} codes.` + (month ? ` They will become active in ${month}.` : ` They are active immediately.`) });
+            return await interaction.editReply({ content: `Successfully uploaded ${totalCodes} ${type} codes.` + (month ? ` They will become active in ${month}.` : ` They are active immediately.`) });
         } catch (error) {
             return await interaction.editReply({ content: `Failed to process the uploaded file: ${error.message}` });
         }

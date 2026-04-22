@@ -6,7 +6,7 @@
   "author": "Reformed",
   "main": "bot.js",
   "scripts": {
-    "start": "node deploy.js && node index.js",
+    "start": "node deploy.js && node --expose-gc index.js",
     "watch": "npm-watch"
   },
   "watch": {
