@@ -15,54 +15,18 @@ function init() {
     db.exec("CREATE TABLE IF NOT EXISTS generic_codes (code TEXT NOT NULL UNIQUE, expired BOOL DEFAULT FALSE)");
     db.exec("CREATE TABLE IF NOT EXISTS players (discordid TEXT NOT NULL, playerid TEXT NOT NULL, code TEXT NOT NULL, date DATETIME DEFAULT CURRENT_TIMESTAMP)");
 
+    try { db.exec("ALTER TABLE codes ADD COLUMN active_month TEXT DEFAULT NULL"); } catch(e) {}
+    try { db.exec("ALTER TABLE nitro_codes ADD COLUMN active_month TEXT DEFAULT NULL"); } catch(e) {}
+
     logger.info("Database initialized and tables verified.");
-
-    // Check for startup files
-    if (fs.existsSync('codes.txt')) {
-        processFileCodes('codes.txt', 'normal');
-    }
-    if (fs.existsSync('nitro.txt')) {
-        processFileCodes('nitro.txt', 'nitro');
-    }
 }
 
-function processFileCodes(filePath, type = 'normal') {
-    if (!fs.existsSync(filePath)) return;
 
-    const table = type === 'nitro' ? 'nitro_codes' : 'codes';
-    const stmt = db.prepare(`INSERT INTO ${table} (code) VALUES (?)`);
-    
-    const insertMany = db.transaction((lines) => {
-        for (let line of lines) {
-            line = line.trim();
-            if (line.length) {
-                try {
-                    stmt.run(line);
-                } catch (error) {
-                    // Ignore duplicates
-                }
-            }
-        }
-    });
-
-    try {
-        const fileContent = fs.readFileSync(filePath, 'utf-8');
-        insertMany(fileContent.split(/\r?\n/));
-        fs.rmSync(filePath);
-        logger.info(`Processed and removed ${filePath}`);
-    } catch (err) {
-        logger.error(`Error processing code file ${filePath}: ${err.message}`);
-    }
-}
 
 function getStats() {
-    const row = db.prepare(`SELECT
-        (SELECT count() FROM codes where used=0) as codes_left,
-        (SELECT count() FROM codes) as codes_total,
-        (SELECT count() FROM nitro_codes where used=0) as nitro_left,
-        (SELECT count() FROM nitro_codes) as nitro_total
-    `).get();
-    return row;
+    const codes = db.prepare(`SELECT active_month, count() as count, sum(case when used=0 then 1 else 0 end) as left FROM codes GROUP BY active_month`).all();
+    const nitro = db.prepare(`SELECT active_month, count() as count, sum(case when used=0 then 1 else 0 end) as left FROM nitro_codes GROUP BY active_month`).all();
+    return { codes, nitro };
 }
 
 function getPlayerHistory(discordId) {
@@ -83,7 +47,8 @@ function getLastPlayerId(discordId) {
 function getUnusedCode(table = 'codes') {
     // Valid tables: codes, nitro_codes
     if (!['codes', 'nitro_codes'].includes(table)) throw new Error("Invalid table");
-    return db.prepare(`SELECT * FROM ${table} WHERE used=FALSE ORDER BY RANDOM() LIMIT 1`).get();
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    return db.prepare(`SELECT * FROM ${table} WHERE used=FALSE AND (active_month IS NULL OR active_month <= ?) ORDER BY RANDOM() LIMIT 1`).get(currentMonth);
 }
 
 function markCodeUsed(table, code) {
@@ -100,15 +65,15 @@ function resetCodes() {
     db.prepare('DELETE FROM codes').run();
 }
 
-// Add codes from array (for attachment handling)
-function addCodes(codeArray, type = 'normal') {
+// Add codes from array
+function addCodes(codeArray, type = 'normal', activeMonth = null) {
     const table = type === 'nitro' ? 'nitro_codes' : 'codes';
-    const stmt = db.prepare(`INSERT INTO ${table} (code) VALUES (?)`);
+    const stmt = db.prepare(`INSERT INTO ${table} (code, active_month) VALUES (?, ?)`);
     const insertMany = db.transaction((codes) => {
         for (const code of codes) {
             if (code && code.trim().length) {
                 try {
-                    stmt.run(code.trim());
+                    stmt.run(code.trim(), activeMonth);
                 } catch (e) {}
             }
         }
@@ -118,7 +83,6 @@ function addCodes(codeArray, type = 'normal') {
 
 module.exports = {
     init,
-    processFileCodes,
     getStats,
     getPlayerHistory,
     getPlayerHistoryById,
@@ -129,21 +93,28 @@ module.exports = {
     recordClaim,
     resetCodes,
     addCodes,
-    addCodes,
-    addCodes,
     getDb: () => db,
     logStats: () => {
-        const row = getStats();
-        logger.info(`Normal codes remaining: ${Math.round(row.codes_left / row.codes_total * 100)}% (${row.codes_left} / ${row.codes_total})`);
-        logger.info(`Nitro codes remaining: ${Math.round(row.nitro_left / row.nitro_total * 100)}% (${row.nitro_left} / ${row.nitro_total})`);
+        const stats = getStats();
+        let totalLeft = 0, totalCount = 0;
+        let nitroLeft = 0, nitroCount = 0;
+        
+        stats.codes.forEach(row => { totalLeft += row.left; totalCount += row.count; });
+        stats.nitro.forEach(row => { nitroLeft += row.left; nitroCount += row.count; });
+        
+        let pct = totalCount > 0 ? Math.round(totalLeft / totalCount * 100) : 0;
+        let nPct = nitroCount > 0 ? Math.round(nitroLeft / nitroCount * 100) : 0;
+        
+        logger.info(`Normal codes remaining: ${pct}% (${totalLeft} / ${totalCount})`);
+        logger.info(`Nitro codes remaining: ${nPct}% (${nitroLeft} / ${nitroCount})`);
     },
-    purgeOldData: async (targetSizeMib) => {
-        // targetSizeMib is in Megabytes
-        const targetSizeBytes = targetSizeMib * 1024 * 1024;
+    purgeOldData: async (targetSizeMb) => {
+        // targetSizeMb is in Megabytes
+        const targetSizeBytes = targetSizeMb * 1000 * 1000;
         let stats = fs.statSync('database.sqlite');
         
         let result = {
-            initialSize: (stats.size / 1024 / 1024).toFixed(2),
+            initialSize: (stats.size / 1000 / 1000).toFixed(2),
             finalSize: 0,
             deletedMonths: []
         };
@@ -200,7 +171,7 @@ module.exports = {
             logger.info(`Purged data before ${nextMonthStart.toISOString()}. New size: ${stats.size}`);
         }
         
-        result.finalSize = (stats.size / 1024 / 1024).toFixed(2);
+        result.finalSize = (stats.size / 1000 / 1000).toFixed(2);
         return result;
     },
     close: () => {

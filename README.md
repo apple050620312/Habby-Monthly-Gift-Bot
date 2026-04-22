@@ -13,19 +13,20 @@ Update the code to newest version by downloading main branch.
 If after updated it still doesn't work, contact me to debug.
 
 ## Bot can't do reset or backup by using the command?
-Setup admin channel in server and use admin commands there.
+The bot no longer uses text commands! Please use the Discord Slash Commands like `/reset`, `/backup`, `/status` and `/upload` instead.
 
-Server supports 100MB file limit for bot to upload database.
+Server supports 100MB file limit for bot to upload database backups.
 
 ## .env
 ```
 TOKEN: Create a Discord bot and get the token
 CLIENT_ID: Copy the bot's Client ID
-GUILD: Copy the guild's ID
-LOG_CHANNEL: Bot will send redeem logs in this channel ID
-ADMIN_CHANNEL: Can use admin level commands like DM the bot does in this channel ID
-GAME: Fill in the game's name so bot will display the activity
-HOST: For example Survivor.io is `mail.survivorio.com`, SOULS is `mail.soulssvc.com`
+GUILD_ID: Copy the guild's ID
+LOG_CHANNEL_ID: Bot will send redeem logs in this channel ID
+GAME_STATUS: Fill in the game's name so bot will display the activity
+API_HOST: For example Survivor.io is `mail.survivorio.com`, SOULS is `mail.soulssvc.com`
+DEVELOPER_IDS: Comma separated list of Discord User IDs with full developer access
+DB_MAX_SIZE_MB: (Optional) Max Database Size in MB (1MB = 1,000,000 bytes). Auto-purges old data if exceeded. Default 100.
 ```
 
 ## Setup
@@ -35,6 +36,8 @@ npm install
 npm start
 ```
 
-## Admin Usage
-1. DM bot `help` for command list.
-2. Send `help` in configured admin channel for command list.
+## Usage & Features
+1. Use the `/help` slash command to see a list of commands available to you. Regular users can use `/about` and `/redeem`.
+2. Admins can upload new gift codes directly through Discord using the `/upload` slash command. It accepts both `.txt` and `.csv` attachments!
+3. **Future Codes**: `/upload` allows you to specify a future month (e.g. `YYYY-MM`), safely holding codes until their designated time.
+4. **Auto-Purge**: The bot autonomously checks the database size every 6 hours and will naturally prune the oldest records if it exceeds `DB_MAX_SIZE_MB`.

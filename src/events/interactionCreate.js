@@ -23,7 +23,7 @@ module.exports = {
             }
             if (!config.isDeveloper(interaction.user.id) && !interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
                  
-                 if (interaction.commandName !== 'redeem') {
+                 if (interaction.commandName !== 'redeem' && interaction.commandName !== 'help' && interaction.commandName !== 'about') {
                      return await interaction.reply({ content: interaction.__('only_admins'), ephemeral: true });
                  }
             }

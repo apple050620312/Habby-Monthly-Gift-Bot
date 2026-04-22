@@ -56,6 +56,14 @@ async function start() {
     db.init();
     db.logStats();
     logger.info(`Done loading codes! ${(Date.now() - startTime) / 1000}s`);
+
+    // Auto purge check (every 6 hours and on startup)
+    if (config.dbMaxSizeMb) {
+        db.purgeOldData(config.dbMaxSizeMb).catch(e => logger.error(`Initial auto-purge failed: ${e.message}`));
+        setInterval(() => {
+            db.purgeOldData(config.dbMaxSizeMb).catch(e => logger.error(`Auto-purge failed: ${e.message}`));
+        }, 6 * 60 * 60 * 1000);
+    }
     
     // Auto-deploy commands on startup
     await deployCommands();
