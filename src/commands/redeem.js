@@ -16,6 +16,6 @@ module.exports = {
         const code = interaction.options.getString('code');
 
         const { startClaimFlow } = require('../utils/claimHelpers');
-        await startClaimFlow(interaction, code);
+        await startClaimFlow(interaction, code, true);
     },
 };

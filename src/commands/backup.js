@@ -16,6 +16,5 @@ module.exports = {
             files: [new AttachmentBuilder('database.sqlite')], 
             ephemeral: false 
         });
-        if (global.gc) global.gc();
     },
 };

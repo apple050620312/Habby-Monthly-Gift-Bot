@@ -76,11 +76,16 @@ module.exports = {
                 const playerId = interaction.fields.getTextInputValue('playerId');
                 
                 // Parse targetCode from customId if present
-                // idModal or idModal-CODE
+                // idModal-ORIGIN-CODE
+                let origin = 'BTN';
                 let targetCode = null;
                 const parts = interaction.customId.split('-');
-                if (parts.length > 1) {
-                    targetCode = parts.slice(1).join('-'); // Join back in case code has dashes?
+                if (parts.length >= 3) {
+                    origin = parts[1];
+                    targetCode = parts.slice(2).join('-');
+                    if (targetCode === 'RANDOM') targetCode = null;
+                } else if (parts.length === 2) {
+                    targetCode = parts[1]; // legacy support
                 }
 
                 if (!/^\d+$/.test(playerId)) {
@@ -93,16 +98,17 @@ module.exports = {
                 }
 
                 await interaction.editReply({ content: interaction.__('fetching_captcha'), ephemeral: true });
-                return await presentCaptcha(interaction, playerId, targetCode);
+                return await presentCaptcha(interaction, playerId, targetCode, origin);
             }
 
             // Captcha Submission
             if (interaction.customId.startsWith('captcha-')) {
                 const parts = interaction.customId.split('-');
-                // captcha-playerId-captchaId-targetCode
+                // captcha-playerId-captchaId-targetCode-origin
                 const playerId = parts[1];
                 const captchaId = parts[2];
                 let targetCode = parts[3];
+                let origin = parts[4] || 'BTN';
                 
                 if (targetCode === 'RANDOM') {
                     targetCode = null;
@@ -113,7 +119,7 @@ module.exports = {
 
                 if (!/^\d+$/.test(captchaAnswer) || captchaAnswer.length !== 4) {
                     await interaction.editReply({ content: interaction.__('invalid_captcha') });
-                    return await presentCaptcha(interaction, playerId, targetCode);
+                    return await presentCaptcha(interaction, playerId, targetCode, origin);
                 }
 
                 // Only check cooldown for RANDOM bot codes (!targetCode). 
@@ -156,7 +162,7 @@ module.exports = {
                 const logChannel = client.channels.cache.get(config.logChannel);
 
                 const announce = async (text) => {
-                    if (!interaction.channel.isDMBased()) {
+                    if (origin === 'CMD' && !interaction.channel.isDMBased()) {
                         await interaction.channel.send(`<@${interaction.user.id}> | ${text}`).catch(() => {});
                     }
                 };
@@ -231,7 +237,7 @@ module.exports = {
                          }
                     
                     case 30001: case 20002: // Busy or Bad Captcha
-                         return await presentCaptcha(interaction, playerId, targetCode);
+                         return await presentCaptcha(interaction, playerId, targetCode, origin);
 
                     case 20003: // Bad Player ID
                          if (logChannel) logChannel.send(`[FAIL] Bad Player ID: ${playerId}`);

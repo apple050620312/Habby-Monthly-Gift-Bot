@@ -28,17 +28,14 @@ async function checkCanClaim(interaction, playerId) {
 
 // UI Helpers
 
-async function startClaimFlow(interaction, targetCode = null) {
-    // If we know the user's ID, skip modal? 
-    // The original code check getLastPlayerId in presentIdModal logic but still SHOWS it I think? 
-    // Wait, original presentIdModal logic: "if row ... input.setValue(...)". It PRE-FILLS but still shows modal.
-    // So we should always show modal for confirmation unless we change that UX.
-    // "trigger way from button to command" -> essentially just start the process.
-    return await presentIdModal(interaction, targetCode);
+async function startClaimFlow(interaction, targetCode = null, isCommand = false) {
+    return await presentIdModal(interaction, targetCode, isCommand);
 }
 
-async function presentIdModal(interaction, targetCode = null) {
-    const customId = targetCode ? `idModal-${targetCode}` : 'idModal';
+async function presentIdModal(interaction, targetCode = null, isCommand = false) {
+    const originFlag = isCommand ? 'CMD' : 'BTN';
+    const codePayload = targetCode || 'RANDOM';
+    const customId = `idModal-${originFlag}-${codePayload}`;
     
     const modal = new ModalBuilder()
         .setCustomId(customId)
@@ -63,7 +60,7 @@ async function presentIdModal(interaction, targetCode = null) {
     }
 }
 
-async function presentCaptcha(interaction, playerId, targetCode = null) {
+async function presentCaptcha(interaction, playerId, targetCode = null, origin = 'BTN') {
     const captchaId = await habbyService.generateCaptcha();
     if (!captchaId) {
         return await interaction.editReply({ content: interaction.__('get_captcha_fail') });
@@ -76,12 +73,11 @@ async function presentCaptcha(interaction, playerId, targetCode = null) {
 
     const captcha = new AttachmentBuilder(imageBuffer, { name: 'captcha.png' });
     
-    // targetCode 'RANDOM' is a keyword to indicate regular flow if null
     const codePayload = targetCode || 'RANDOM';
     
     const enterButton = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
-            .setCustomId(`captcha-${playerId}-${captchaId}-${codePayload}`)
+            .setCustomId(`captcha-${playerId}-${captchaId}-${codePayload}-${origin}`)
             .setLabel(interaction.__('answer_captcha'))
             .setStyle(ButtonStyle.Primary)
     );

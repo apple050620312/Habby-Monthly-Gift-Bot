@@ -20,7 +20,6 @@ module.exports = {
                 ephemeral: false
             });
             db.resetCodes();
-            if (global.gc) global.gc();
         } catch (e) {
             logger.error("Error resetting codes: " + e.message);
             if (!interaction.replied) {

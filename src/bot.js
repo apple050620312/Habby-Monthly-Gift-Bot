@@ -59,13 +59,9 @@ async function start() {
 
     // Auto purge check (every 6 hours and on startup)
     if (config.dbMaxSizeMb) {
-        db.purgeOldData(config.dbMaxSizeMb)
-            .catch(e => logger.error(`Initial auto-purge failed: ${e.message}`))
-            .finally(() => { if (global.gc) global.gc(); });
+        db.purgeOldData(config.dbMaxSizeMb).catch(e => logger.error(`Initial auto-purge failed: ${e.message}`));
         setInterval(() => {
-            db.purgeOldData(config.dbMaxSizeMb)
-                .catch(e => logger.error(`Auto-purge failed: ${e.message}`))
-                .finally(() => { if (global.gc) global.gc(); });
+            db.purgeOldData(config.dbMaxSizeMb).catch(e => logger.error(`Auto-purge failed: ${e.message}`));
         }, 6 * 60 * 60 * 1000);
     }
     
