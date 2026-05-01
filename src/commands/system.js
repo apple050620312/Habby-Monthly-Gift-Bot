@@ -55,9 +55,7 @@ module.exports = {
                     totalCount += r.count;
                     const currentMonth = new Date().toISOString().slice(0, 7);
                     let monthLabel;
-                    if (!r.active_month) {
-                        monthLabel = 'Active (No Expiry)';
-                    } else if (r.active_month === currentMonth) {
+                    if (r.active_month === currentMonth) {
                         monthLabel = `Active (${r.active_month})`;
                     } else {
                         monthLabel = `Future (${r.active_month})`;

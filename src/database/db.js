@@ -25,8 +25,8 @@ function init() {
 
 function getStats() {
     const currentMonth = new Date().toISOString().slice(0, 7);
-    db.prepare('DELETE FROM codes WHERE active_month < ? AND active_month IS NOT NULL').run(currentMonth);
-    db.prepare('DELETE FROM nitro_codes WHERE active_month < ? AND active_month IS NOT NULL').run(currentMonth);
+    db.prepare('DELETE FROM codes WHERE active_month < ? OR active_month IS NULL').run(currentMonth);
+    db.prepare('DELETE FROM nitro_codes WHERE active_month < ? OR active_month IS NULL').run(currentMonth);
 
     const codes = db.prepare(`SELECT active_month, count() as count, sum(case when used=0 then 1 else 0 end) as left FROM codes GROUP BY active_month`).all();
     const nitro = db.prepare(`SELECT active_month, count() as count, sum(case when used=0 then 1 else 0 end) as left FROM nitro_codes GROUP BY active_month`).all();
@@ -52,7 +52,7 @@ function getUnusedCode(table = 'codes') {
     // Valid tables: codes, nitro_codes
     if (!['codes', 'nitro_codes'].includes(table)) throw new Error("Invalid table");
     const currentMonth = new Date().toISOString().slice(0, 7);
-    return db.prepare(`SELECT * FROM ${table} WHERE used=FALSE AND (active_month IS NULL OR active_month = ?) ORDER BY RANDOM() LIMIT 1`).get(currentMonth);
+    return db.prepare(`SELECT * FROM ${table} WHERE used=FALSE AND active_month = ? ORDER BY RANDOM() LIMIT 1`).get(currentMonth);
 }
 
 function markCodeUsed(table, code) {
@@ -80,6 +80,9 @@ function addCodes(codeArray, type = 'normal', activeMonth = null) {
         }
     });
     insertMany(codeArray);
+
+    // Auto-Heal: If any of these uploaded codes were already claimed by a player in the past, instantly mark them as used!
+    db.prepare(`UPDATE ${table} SET used=TRUE WHERE code IN (SELECT code FROM players)`).run();
 }
 
 // Remove unused codes for a specific month

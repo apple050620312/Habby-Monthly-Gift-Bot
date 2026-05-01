@@ -25,8 +25,8 @@ module.exports = {
                         ))
                 .addStringOption(option =>
                     option.setName('month')
-                        .setDescription('Optional: Future month to activate these codes (YYYY-MM)')
-                        .setRequired(false))
+                        .setDescription('The active month for these codes (YYYY-MM)')
+                        .setRequired(true))
         )
         .addSubcommand(subcommand =>
             subcommand
@@ -67,7 +67,7 @@ module.exports = {
             if (!attachment.name.endsWith('.txt') && !attachment.name.endsWith('.csv')) {
                  return await interaction.reply({ content: "Please upload a valid .txt or .csv file.", ephemeral: true });
             }
-            if (month && !/^\d{4}-\d{2}$/.test(month)) {
+            if (!/^\d{4}-\d{2}$/.test(month)) {
                  return await interaction.reply({ content: "Invalid month format. Please use YYYY-MM (e.g., 2024-05).", ephemeral: true });
             }
 
@@ -83,9 +83,9 @@ module.exports = {
                      return await interaction.editReply({ content: "The uploaded file is empty or contains no valid codes." });
                 }
 
-                db.addCodes(codes, type, month || null);
+                db.addCodes(codes, type, month);
 
-                return await interaction.editReply({ content: `Successfully uploaded **${codes.length}** ${type} codes.` + (month ? ` They will become active in ${month}.` : ` They are active immediately.`) });
+                return await interaction.editReply({ content: `✅ Successfully uploaded **${codes.length}** ${type} codes assigned to the **${month}** batch.` });
             } catch (error) {
                 return await interaction.editReply({ content: `Failed to process the uploaded file: ${error.message}` });
             }
