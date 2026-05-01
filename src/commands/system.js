@@ -53,7 +53,15 @@ module.exports = {
                 rows.forEach(r => {
                     totalLeft += r.left;
                     totalCount += r.count;
-                    const monthLabel = r.active_month ? `Future (${r.active_month})` : 'Active';
+                    const currentMonth = new Date().toISOString().slice(0, 7);
+                    let monthLabel;
+                    if (!r.active_month) {
+                        monthLabel = 'Active (No Expiry)';
+                    } else if (r.active_month === currentMonth) {
+                        monthLabel = `Active (${r.active_month})`;
+                    } else {
+                        monthLabel = `Future (${r.active_month})`;
+                    }
                     breakdown.push(`  - ${monthLabel}: ${Math.round((r.count > 0 ? r.left / r.count : 0) * 100)}% (${r.left} / ${r.count})`);
                 });
                 let pct = totalCount > 0 ? Math.round((totalLeft / totalCount) * 100) : 0;

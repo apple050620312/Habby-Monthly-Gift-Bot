@@ -217,7 +217,7 @@ module.exports = {
                              return await interaction.editReply({ content: interaction.__('something_went_wrong'), ephemeral: true });
                          }
 
-                    case 20401: case 20403: case 20404: case 20409: // Bad/Expired code
+                    case 20401: case 20403: case 20404: case 20407: case 20409: // Bad/Expired code
                          if (targetCode) {
                              // [Manual/Custom Code]
                              // User typed something wrong or old code
