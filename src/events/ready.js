@@ -3,7 +3,7 @@ const logger = require('../utils/logger');
 const { ActivityType, PermissionsBitField } = require('discord.js');
 
 module.exports = {
-    name: 'ready',
+    name: 'clientReady',
     once: true,
     execute(client) {
         logger.info(`Bot has started as ${client.user.tag}`);
