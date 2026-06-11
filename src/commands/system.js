@@ -44,10 +44,10 @@ module.exports = {
                 dbSizeMb = (fileStats.size / 1000 / 1000).toFixed(2);
             } catch (e) {}
 
-            let content = `Real time total ${Date.now() - before}ms | API ${apiPing}ms | WS ${wsPing}ms | DB ${dbPing}ms | DB Size ${dbSizeMb}MB\n`;
+            let performanceString = `Real time total ${Date.now() - before}ms | API ${apiPing}ms | WS ${wsPing}ms | DB ${dbPing}ms | DB Size ${dbSizeMb}MB`;
 
             const formatStats = (rows, label) => {
-                if (!rows || rows.length === 0) return `${label}: 0 codes`;
+                if (!rows || rows.length === 0) return `### ${label}:\n- Total : 0 codes`;
                 let totalLeft = 0, totalCount = 0;
                 let breakdown = [];
                 rows.forEach(r => {
@@ -60,14 +60,15 @@ module.exports = {
                     } else {
                         monthLabel = `Future (${r.active_month})`;
                     }
-                    breakdown.push(`  - ${monthLabel}: ${Math.round((r.count > 0 ? r.left / r.count : 0) * 100)}% (${r.left} / ${r.count})`);
+                    breakdown.push(`- ${monthLabel}: ${Math.round((r.count > 0 ? r.left / r.count : 0) * 100)}% (${r.left} / ${r.count})`);
                 });
                 let pct = totalCount > 0 ? Math.round((totalLeft / totalCount) * 100) : 0;
-                return `${label} remaining: ${pct}% (${totalLeft} / ${totalCount})\n` + breakdown.join('\n');
+                return `### ${label}:\n- Total : ${pct}% (${totalLeft} / ${totalCount})\n` + breakdown.join('\n');
             };
 
-            content += formatStats(stats.codes, 'Normal codes') + '\n';
-            content += formatStats(stats.nitro, 'Nitro codes') + '\n';
+            let content = formatStats(stats.codes, 'Normal codes remaining') + '\n';
+            content += formatStats(stats.nitro, 'Nitro codes remaining') + '\n\n';
+            content += performanceString;
 
             await interaction.editReply(content);
         } 
