@@ -10,9 +10,7 @@ const { deployCommands } = require('../deploy');
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMembers,
         GatewayIntentBits.DirectMessages,
-        GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessages,
     ],
     partials: [Partials.Channel, Partials.Message],

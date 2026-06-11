@@ -29,10 +29,10 @@ module.exports = {
                  if (interaction.commandName !== 'redeem' && interaction.commandName !== 'help' && interaction.commandName !== 'about') {
                      if (!interaction.channel.isDMBased()) {
                          const everyoneCanView = interaction.channel.permissionsFor(interaction.guild.roles.everyone).has(PermissionsBitField.Flags.ViewChannel);
-                         const viewableCount = everyoneCanView ? interaction.guild.memberCount : interaction.channel.members.size;
+                         const viewableCount = everyoneCanView ? interaction.guild.memberCount : 0;
                          
                          if (viewableCount > 100) {
-                             return await interaction.reply({ content: "❌ For security, admin commands cannot be run in a channel with more than 100 viewable members. Please use a private admin channel.", ephemeral: true });
+                             return await interaction.reply({ content: "❌ For security, admin commands cannot be run in a public channel with more than 100 viewable members. Please use a private admin channel.", ephemeral: true });
                          }
                      }
                  }
