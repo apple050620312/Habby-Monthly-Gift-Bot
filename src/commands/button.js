@@ -13,14 +13,6 @@ module.exports = {
                     option.setName('channel')
                         .setDescription('Channel to post to')
                         .setRequired(true))
-                .addStringOption(option =>
-                    option.setName('message')
-                        .setDescription('The message to send')
-                        .setRequired(true))
-                .addStringOption(option =>
-                    option.setName('label')
-                        .setDescription('The text of the button')
-                        .setRequired(true))
         )
         .addSubcommand(subcommand =>
             subcommand
@@ -29,14 +21,6 @@ module.exports = {
                 .addChannelOption(option =>
                     option.setName('channel')
                         .setDescription('Channel to post to')
-                        .setRequired(true))
-                .addStringOption(option =>
-                    option.setName('message')
-                        .setDescription('The message to send')
-                        .setRequired(true))
-                .addStringOption(option =>
-                    option.setName('codes')
-                        .setDescription('Comma separated list of codes (e.g. Code1, Code2)')
                         .setRequired(true))
                 .addStringOption(option =>
                     option.setName('message_id')
@@ -58,78 +42,51 @@ module.exports = {
              return await interaction.reply({ content: interaction.__('permission_error'), ephemeral: true });
         }
 
+        const { ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
+
         if (subcommand === 'monthly') {
-            const message = interaction.options.getString('message');
-            const label = interaction.options.getString('label');
+            const modal = new ModalBuilder()
+                .setCustomId(`btnModal-monthly-${channel.id}`)
+                .setTitle('Monthly Button Form');
 
-            await channel.send({
-                content: message,
-                components: [new ActionRowBuilder()
-                    .addComponents(
-                        new ButtonBuilder()
-                            .setCustomId('getCode')
-                            .setLabel(label)
-                            .setStyle(ButtonStyle.Primary),
-                    )
-                ]
-            });
+            const messageInput = new TextInputBuilder()
+                .setCustomId('message')
+                .setLabel('Message Content')
+                .setStyle(TextInputStyle.Paragraph)
+                .setRequired(true);
 
-            return await interaction.reply({ content: interaction.__('posted_success'), ephemeral: false });
+            const labelInput = new TextInputBuilder()
+                .setCustomId('label')
+                .setLabel('Button Label')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true);
+
+            modal.addComponents(new ActionRowBuilder().addComponents(messageInput), new ActionRowBuilder().addComponents(labelInput));
+            
+            await interaction.showModal(modal);
         } 
         else if (subcommand === 'custom') {
-            const messageContent = interaction.options.getString('message');
-            const codesString = interaction.options.getString('codes');
-            const messageId = interaction.options.getString('message_id');
+            const messageId = interaction.options.getString('message_id') || 'NONE';
             
-            const codes = codesString.split(',').map(c => c.trim()).filter(c => c.length > 0);
-            
-            if (codes.length === 0) {
-                return await interaction.reply({ content: interaction.__('no_valid_codes'), ephemeral: true });
-            }
-            if (codes.length > 25) {
-                 return await interaction.reply({ content: interaction.__('max_codes_limit'), ephemeral: true });
-            }
+            const modal = new ModalBuilder()
+                .setCustomId(`btnModal-custom-${channel.id}-${messageId}`)
+                .setTitle('Custom Buttons Form');
 
-            const rows = [];
-            let currentRow = new ActionRowBuilder();
-            
-            codes.forEach((code, index) => {
-                if (index > 0 && index % 5 === 0) {
-                    rows.push(currentRow);
-                    currentRow = new ActionRowBuilder();
-                }
-                currentRow.addComponents(
-                    new ButtonBuilder()
-                        .setCustomId(`manualRedeem-${code}`)
-                        .setLabel(code)
-                        .setStyle(ButtonStyle.Success)
-                );
-            });
-            if (currentRow.components.length > 0) {
-                rows.push(currentRow);
-            }
+            const messageInput = new TextInputBuilder()
+                .setCustomId('message')
+                .setLabel('Message Content')
+                .setStyle(TextInputStyle.Paragraph)
+                .setRequired(true);
 
-            if (messageId) {
-                try {
-                    const targetMessage = await channel.messages.fetch(messageId);
-                    if (!targetMessage) {
-                        return await interaction.reply({ content: "Message not found in that channel.", ephemeral: true });
-                    }
-                    await targetMessage.edit({
-                        content: messageContent,
-                        components: rows
-                    });
-                    return await interaction.reply({ content: interaction.__('edited_success'), ephemeral: false });
-                } catch (error) {
-                    return await interaction.reply({ content: `Failed to edit message: ${error.message}`, ephemeral: true });
-                }
-            } else {
-                await channel.send({
-                    content: messageContent,
-                    components: rows
-                });
-                return await interaction.reply({ content: interaction.__('posted_buttons', codes.length), ephemeral: false });
-            }
+            const codesInput = new TextInputBuilder()
+                .setCustomId('codes')
+                .setLabel('Codes (comma separated)')
+                .setStyle(TextInputStyle.Paragraph)
+                .setRequired(true);
+
+            modal.addComponents(new ActionRowBuilder().addComponents(messageInput), new ActionRowBuilder().addComponents(codesInput));
+            
+            await interaction.showModal(modal);
         }
     },
 };

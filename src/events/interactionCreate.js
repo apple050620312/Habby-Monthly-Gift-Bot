@@ -1,4 +1,4 @@
-const { PermissionsBitField } = require('discord.js');
+const { PermissionsBitField, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const config = require('../config');
 const db = require('../database/db');
 const habbyService = require('../services/habbyService');
@@ -70,6 +70,92 @@ module.exports = {
         // --- MODALS ---
         } else if (interaction.isModalSubmit()) {
             
+            // --- BUTTON FORMS (Admin) ---
+            if (interaction.customId.startsWith('btnModal-')) {
+                const parts = interaction.customId.split('-');
+                const type = parts[1];
+                const channelId = parts[2];
+                const messageId = parts[3];
+
+                const channel = interaction.guild.channels.cache.get(channelId);
+                if (!channel) {
+                    return await interaction.reply({ content: 'Channel not found.', ephemeral: true });
+                }
+
+                if (type === 'monthly') {
+                    const message = interaction.fields.getTextInputValue('message');
+                    const label = interaction.fields.getTextInputValue('label');
+
+                    await channel.send({
+                        content: message,
+                        components: [new ActionRowBuilder()
+                            .addComponents(
+                                new ButtonBuilder()
+                                    .setCustomId('getCode')
+                                    .setLabel(label)
+                                    .setStyle(ButtonStyle.Primary),
+                            )
+                        ]
+                    });
+
+                    return await interaction.reply({ content: interaction.__('posted_success'), ephemeral: false });
+                }
+                else if (type === 'custom') {
+                    const messageContent = interaction.fields.getTextInputValue('message');
+                    const codesString = interaction.fields.getTextInputValue('codes');
+                    
+                    const codes = codesString.split(',').map(c => c.trim()).filter(c => c.length > 0);
+                    
+                    if (codes.length === 0) {
+                        return await interaction.reply({ content: interaction.__('no_valid_codes'), ephemeral: true });
+                    }
+                    if (codes.length > 25) {
+                         return await interaction.reply({ content: interaction.__('max_codes_limit'), ephemeral: true });
+                    }
+
+                    const rows = [];
+                    let currentRow = new ActionRowBuilder();
+                    
+                    codes.forEach((code, index) => {
+                        if (index > 0 && index % 5 === 0) {
+                            rows.push(currentRow);
+                            currentRow = new ActionRowBuilder();
+                        }
+                        currentRow.addComponents(
+                            new ButtonBuilder()
+                                .setCustomId(`manualRedeem-${code}`)
+                                .setLabel(code)
+                                .setStyle(ButtonStyle.Success)
+                        );
+                    });
+                    if (currentRow.components.length > 0) {
+                        rows.push(currentRow);
+                    }
+
+                    if (messageId && messageId !== 'NONE') {
+                        try {
+                            const targetMessage = await channel.messages.fetch(messageId);
+                            if (!targetMessage) {
+                                return await interaction.reply({ content: "Message not found in that channel.", ephemeral: true });
+                            }
+                            await targetMessage.edit({
+                                content: messageContent,
+                                components: rows
+                            });
+                            return await interaction.reply({ content: interaction.__('edited_success'), ephemeral: false });
+                        } catch (error) {
+                            return await interaction.reply({ content: `Failed to edit message: ${error.message}`, ephemeral: true });
+                        }
+                    } else {
+                        await channel.send({
+                            content: messageContent,
+                            components: rows
+                        });
+                        return await interaction.reply({ content: interaction.__('posted_buttons', codes.length), ephemeral: false });
+                    }
+                }
+            }
+
             // ID Input Submission
             if (interaction.customId.startsWith('idModal')) {
                 await interaction.reply({ content: interaction.__('checking'), ephemeral: true });
@@ -162,9 +248,7 @@ module.exports = {
                 const logChannel = client.channels.cache.get(config.logChannel);
 
                 const announce = async (text) => {
-                    if (origin === 'CMD' && !interaction.channel.isDMBased()) {
-                        await interaction.channel.send(`<@${interaction.user.id}> | ${text}`).catch(() => {});
-                    }
+                    // No longer announce publicly for CMD to make /redeem ephemeral
                 };
 
                 switch (result.code) {
@@ -190,7 +274,7 @@ module.exports = {
                          }
                          
                          if (logChannel) {
-                             logChannel.send(`[REDEEM] Discord: ${interaction.member} \`${interaction.user.username}\` PlayerID: \`${playerId}\` Code: \`${codeToRedeem}\` Locale: \`${interaction.locale}\``);
+                             logChannel.send({ content: `[REDEEM] Discord: <@${interaction.user.id}> \`${interaction.user.username}\` PlayerID: \`${playerId}\` Code: \`${codeToRedeem}\` Locale: \`${interaction.locale}\``, allowedMentions: { parse: [] } });
                          }
                          logger.info(`Redeem success Discord: ${interaction.user.username} PlayerID: ${playerId} Code: ${codeToRedeem} Locale: ${interaction.locale}`);
                          await announce(`🎉 ${interaction.__('congratulations')}`);
@@ -200,14 +284,14 @@ module.exports = {
                          if (targetCode) {
                              // [Manual/Custom Code]
                              // Quiet failure for user input codes (likely already redeemed by them)
-                             if (logChannel) logChannel.send(`[INFO] Discord: ${interaction.member} - Custom Code ${codeToRedeem} already redeemed/limit.`);
+                             if (logChannel) logChannel.send({ content: `[INFO] Discord: <@${interaction.user.id}> - Custom Code ${codeToRedeem} already redeemed/limit.`, allowedMentions: { parse: [] } });
                              await announce(`❌ ${interaction.__('already_redeemed')}`);
                              return await interaction.editReply({ content: interaction.__('already_redeemed'), ephemeral: true });
                          } else {
                              // [Monthly Code from DB]
                              // This is a SYSTEM ERROR. We gave them a code that was already used.
                              logger.warn(`User assigned ALREADY USED code from DB: ${codeToRedeem}`);
-                             if (logChannel) logChannel.send(`[WARN] Database gave used code ${codeToRedeem} to ${interaction.member} (${interaction.user.id})`);
+                             if (logChannel) logChannel.send({ content: `[WARN] Database gave used code ${codeToRedeem} to <@${interaction.user.id}>`, allowedMentions: { parse: [] } });
                              
                              // Mark it used in DB so we don't give it out again
                              db.markCodeUsed(table, codeToRedeem);
